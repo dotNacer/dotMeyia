@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit'
-import type { PageServerLoad } from './$types'
+import type { LayoutServerLoad } from './$types'
 import { auth } from '$lib/server/auth'
 
 export const load = (async ({ request }) => {
@@ -10,4 +10,4 @@ export const load = (async ({ request }) => {
     if (!session) throw redirect(307, '/login')
 
     return { session }
-}) satisfies PageServerLoad
+}) satisfies LayoutServerLoad

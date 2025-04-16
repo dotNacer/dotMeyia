@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  notes         Note[]
 
   @@unique([email])
   @@map("user")
@@ -71,4 +72,16 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Note {
+  id        String   @id
+  title     String
+  content   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("note")
 }
