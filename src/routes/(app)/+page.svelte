@@ -13,6 +13,10 @@
 </script>
 
 {#if loaded}
-	<h1>Welcome back {user?.name}</h1>
-	<LogoutButton />
+	<h1 class="text-2xl font-bold">Welcome back</h1>
+
+	<div class="flex items-center gap-2">
+		<img src={user?.image} alt={user?.name} class="h-10 w-10 rounded-full" />
+		<span>{user?.name}</span>
+	</div>
 {/if}

@@ -19,7 +19,34 @@ export const GET: RequestHandler = authenticatedApi(
     }
 )
 
-// You can wrap other methods (POST, PUT, DELETE) similarly
-// export const POST: RequestHandler = authenticatedApi(async ({ request }, session) => {
-//    // ... your logic here, using session.user.id
-// });
+export const POST: RequestHandler = authenticatedApi(
+    async ({ request }, user) => {
+        const { title, content } = await request.json()
+        const note = await prisma.note.create({
+            data: {
+                title,
+                content,
+                userId: user.id,
+            },
+        })
+        return new Response(JSON.stringify(note), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+    }
+)
+
+// Ne pas laisser
+export const DELETE: RequestHandler = authenticatedApi(
+    async ({ request }, user) => {
+        await prisma.note.deleteMany({
+            where: { userId: user.id },
+        })
+        return new Response(JSON.stringify({ message: 'Notes deleted' }), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+    }
+)
