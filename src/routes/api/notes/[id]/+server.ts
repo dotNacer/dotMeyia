@@ -39,3 +39,15 @@ export const PUT: RequestHandler = authenticatedApi(
         })
     }
 )
+
+export const DELETE: RequestHandler = authenticatedApi(
+    async ({ params }, user) => {
+        await prisma.note.delete({
+            where: { id: params.id, userId: user.id },
+        })
+
+        return new Response(null, {
+            status: 204,
+        })
+    }
+)

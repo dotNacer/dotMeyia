@@ -31,3 +31,9 @@ export function debounce<T extends (...args: any[]) => any>(
         }, delay)
     }
 }
+
+export const PLACEHOLDER_CONTENTS = [
+    'Who is Meÿia ?',
+    "What's on your mind?",
+    'What was Mido doing last night ?',
+]

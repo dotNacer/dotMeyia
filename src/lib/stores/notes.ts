@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store'
-import type { Note, NoteDTO } from '$lib/types/Note'
+import type { Note } from '@prisma/client'
+
+type NoteDTO = Pick<Note, 'title' | 'content'>
 
 const createNotesStore = () => {
     const { subscribe, set, update } = writable<Note[]>([])
@@ -40,11 +42,11 @@ const createNotesStore = () => {
             update((notes) => [...notes, data satisfies Note])
             return data satisfies Note
         },
-        deleteAll: async () => {
-            await fetch('/api/notes', {
+        delete: async (id: string) => {
+            await fetch(`/api/notes/${id}`, {
                 method: 'DELETE',
             })
-            set([])
+            update((notes) => notes.filter((note) => note.id !== id))
         },
     }
 }

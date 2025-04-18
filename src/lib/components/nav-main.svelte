@@ -1,6 +1,8 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar';
 	import { page } from '$app/stores';
+	import { Sun } from 'lucide-svelte';
+	import { themeStore } from '$lib/stores/theme';
 	let {
 		items
 	}: {
@@ -45,6 +47,10 @@
 						</Sidebar.MenuItem>
 					{/each}
 				{/if}
+				<Sidebar.MenuButton onclick={() => themeStore.toggle()}>
+					<Sun class="size-4" />
+					Toggle Theme
+				</Sidebar.MenuButton>
 			</Sidebar.Menu>
 		</Sidebar.GroupContent>
 	</Sidebar.Group>
