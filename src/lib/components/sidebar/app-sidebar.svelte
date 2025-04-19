@@ -1,9 +1,7 @@
 <script lang="ts" module>
 	import Home from '@lucide/svelte/icons/home';
 	import FileText from '@lucide/svelte/icons/file-text';
-	import Building2 from '@lucide/svelte/icons/building-2';
-	import TestTube from '@lucide/svelte/icons/test-tube';
-
+	import BrainCircuit from '@lucide/svelte/icons/brain-circuit';
 	// This is sample data.
 	const data = {
 		navMain: [
@@ -20,6 +18,11 @@
 						title: 'Notes',
 						url: '/notes',
 						icon: FileText
+					},
+					{
+						title: 'Contexts',
+						url: '/contexts',
+						icon: BrainCircuit
 					}
 				]
 			}
@@ -28,9 +31,9 @@
 </script>
 
 <script lang="ts">
-	import NavMain from './nav-main.svelte';
-	import NavUser from '$lib/components/nav-user.svelte';
-	import NavSearch from '$lib/components/nav-search.svelte';
+	import NavMain from '$lib/components/sidebar/nav-main.svelte';
+	import NavUser from '$lib/components/sidebar/nav-user.svelte';
+	import NavSearch from '$lib/components/sidebar/nav-search.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import type { ComponentProps } from 'svelte';
 	import type { User } from 'better-auth';

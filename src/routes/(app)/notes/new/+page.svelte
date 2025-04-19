@@ -16,18 +16,18 @@
 		content: ''
 	});
 
-	const handleSave = async () => {
+	async function handleSave() {
 		if (!noteId) {
 			const newNote = await notes.create({
 				title: tempNote.title,
 				content: tempNote.content
-			} satisfies NoteData);
+			});
 			noteId = newNote?.id ?? null;
 		} else {
-			notes.edit(noteId, { title: tempNote.title, content: tempNote.content } satisfies NoteData);
+			notes.edit(noteId, { title: tempNote.title, content: tempNote.content });
 		}
 		savedComponent?.triggerSaveAnimation();
-	};
+	}
 
 	const debouncedSave = debounce(handleSave, 700);
 </script>

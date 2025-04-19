@@ -21,10 +21,11 @@ model User {
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
+
   sessions      Session[]
   accounts      Account[]
   notes         Note[]
-
+  contexts      AIContext[]
   @@unique([email])
   @@map("user")
 }
@@ -83,5 +84,20 @@ model Note {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  contexts  AIContext[] 
+
   @@map("note")
+}
+
+model AIContext {
+  id        String   @id @default(uuid())
+  prompt    String
+  notes     Note[]  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("context")
 }

@@ -5,13 +5,16 @@ import { authenticatedApi } from '$lib/server/authUtils' // Import the wrapper
 // Wrap the handler with authenticatedApi
 export const GET: RequestHandler = authenticatedApi(
     async ({ request }, user) => {
-        const notes = await prisma.note.findMany({
+        const context = await prisma.aIContext.findMany({
             where: {
                 userId: user.id, // Use the user ID from the validated session
             },
+            include: {
+                notes: true,
+            },
         })
 
-        return new Response(JSON.stringify(notes), {
+        return new Response(JSON.stringify(context), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -21,15 +24,20 @@ export const GET: RequestHandler = authenticatedApi(
 
 export const POST: RequestHandler = authenticatedApi(
     async ({ request }, user) => {
-        const { title, content } = await request.json()
-        const note = await prisma.note.create({
+        const { prompt, notes_ids } = await request.json()
+        const context = await prisma.aIContext.create({
             data: {
-                title,
-                content,
+                prompt,
                 userId: user.id,
+                notes: {
+                    connect: notes_ids.map((id: string) => ({ id })),
+                },
+            },
+            include: {
+                notes: true,
             },
         })
-        return new Response(JSON.stringify(note), {
+        return new Response(JSON.stringify(context), {
             headers: {
                 'Content-Type': 'application/json',
             },
