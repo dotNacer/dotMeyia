@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 	import ContextCard from '$lib/components/context-card/context-card.svelte';
 	import { goto } from '$app/navigation';
 
@@ -44,7 +45,7 @@
 		{#if sortedContexts.length > 0}
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 				{#each sortedContexts as context (context.id)}
-					<div animate:flip={flipOptions}>
+					<div animate:flip={flipOptions} out:fly={{ y: -10, duration: 300 }}>
 						<ContextCard {context} />
 					</div>
 				{/each}

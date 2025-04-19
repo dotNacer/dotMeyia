@@ -4,6 +4,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { onMount } from 'svelte';
 	import { flip } from 'svelte/animate';
+	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import NoteCard from '$lib/components/note-card/note-card.svelte';
 	import { goto } from '$app/navigation';
@@ -26,9 +27,6 @@
 	});
 </script>
 
-<button onclick={() => notes.create({ title: 'New Note', content: 'New Note Content' })}
-	>Add Note</button
->
 <div class="container mx-auto max-w-5xl px-4 py-8">
 	<div class="flex flex-col space-y-6">
 		<!-- Header section -->
@@ -47,7 +45,7 @@
 		{#if sortedNotes.length > 0}
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 				{#each sortedNotes as note (note.id)}
-					<div animate:flip={flipOptions}>
+					<div animate:flip={flipOptions} out:fly={{ y: -10, duration: 300 }}>
 						<NoteCard {note} />
 					</div>
 				{/each}

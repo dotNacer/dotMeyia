@@ -5,7 +5,11 @@
 	import { notes } from '$lib/stores/notes';
 	import { Check, Search, ListFilter } from 'lucide-svelte';
 
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+
+	onMount(async () => {
+		await notes.fetch();
+	});
 
 	const dispatch = createEventDispatcher();
 	let { selectedNotes = $bindable<Note[]>([]) }: { selectedNotes: Note[] } = $props();

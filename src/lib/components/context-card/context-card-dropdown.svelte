@@ -3,6 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Ellipsis } from 'lucide-svelte';
 	import { contexts } from '$lib/stores/contexts';
+	import { goto } from '$app/navigation';
 	let { id }: { id: string } = $props();
 	function handleDelete() {
 		contexts.delete(id);
@@ -17,6 +18,7 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
+			<DropdownMenu.Item onclick={() => goto(`/contexts/${id}`)}>Edit</DropdownMenu.Item>
 			<DropdownMenu.Item class="text-red-500" onclick={handleDelete}>Delete</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>

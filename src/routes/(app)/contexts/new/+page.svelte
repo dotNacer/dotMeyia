@@ -5,7 +5,10 @@
 	import SelectNotes from '$lib/components/context-card/select-notes.svelte';
 	import { debounce } from '$lib/utils';
 	import Saved from '$lib/components/animations/Saved.svelte';
-	type AIContextData = Pick<AIContext, 'prompt' | 'notes'> & { notes: Note[] };
+	import { Button } from '$lib/components/ui/button';
+	import { ChevronLeft } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	type AIContextData = Pick<AIContext, 'prompt'> & { notes: Note[] };
 	let contextId = $state<string | null>(null);
 	let aiContext = $state<AIContextData>({
 		prompt: '',
@@ -32,7 +35,12 @@
 
 <div class="flex flex-row gap-8 p-8">
 	<div class="flex w-1/2 flex-col gap-4">
-		<h1 class="text-2xl font-bold">Prompt</h1>
+		<div class="flex items-center gap-4">
+			<Button onclick={() => goto('/contexts')} variant="outline" size="icon">
+				<ChevronLeft />
+			</Button>
+			<h1 class="text-2xl font-bold">Prompt</h1>
+		</div>
 		<Textarea
 			class="h-[40rem] max-h-[60rem] min-h-[40rem]"
 			placeholder="Enter your prompt..."

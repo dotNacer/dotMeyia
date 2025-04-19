@@ -27,8 +27,11 @@ export const PUT: RequestHandler = authenticatedApi(
             data: {
                 prompt: data.prompt,
                 notes: {
-                    connect: data.notes.map((note: Note) => ({ id: note.id })),
+                    set: data.notes_ids.map((id: string) => ({ id })),
                 },
+            },
+            include: {
+                notes: true,
             },
         })
 

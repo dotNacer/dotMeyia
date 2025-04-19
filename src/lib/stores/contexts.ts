@@ -20,7 +20,7 @@ const createContextsStore = () => {
         get: async (id: string) => {
             const response = await fetch(`/api/contexts/${id}`)
             const data = await response.json()
-            return data satisfies AIContext | null
+            return data satisfies ContextWithNotes | null
         },
         edit: async (id: string, context: ContextDTO, notes: Note[]) => {
             const response = await fetch(`/api/contexts/${id}`, {
