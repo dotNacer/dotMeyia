@@ -10,7 +10,7 @@
 <ContextDialog {context}>
 	<Card.Root class="h-full overflow-hidden transition-all hover:shadow-md">
 		<Card.Header class="flex flex-row items-center justify-between">
-			<Card.Title>Context #{context.id.slice(0, 8)}</Card.Title>
+			<Card.Title>{context.title}</Card.Title>
 			<ContextCardDropdown id={context.id} />
 		</Card.Header>
 		<Card.Content>

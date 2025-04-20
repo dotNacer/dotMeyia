@@ -4,6 +4,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { notes } from '$lib/stores/notes';
 	import { Check, Search, ListFilter } from 'lucide-svelte';
+	import NoteHover from '$lib/components/note-card/note-hover.svelte';
 
 	import { createEventDispatcher, onMount } from 'svelte';
 
@@ -39,16 +40,18 @@
 		</Button>
 	</div>
 	{#each $notes as note}
-		<button
-			class="flex flex-row items-center justify-between border p-4"
-			onclick={() => {
-				toggleNote(note);
-			}}
-		>
-			<p>{note.title}</p>
-			{#if selectedNotes.some((n) => n.id === note.id)}
-				<Check class="h-4 w-4" />
-			{/if}
-		</button>
+		<NoteHover {note}>
+			<button
+				class="flex w-full flex-row items-center justify-between border p-4"
+				onclick={() => {
+					toggleNote(note);
+				}}
+			>
+				<p>{note.title}</p>
+				{#if selectedNotes.some((n) => n.id === note.id)}
+					<Check class="h-4 w-4" />
+				{/if}
+			</button>
+		</NoteHover>
 	{/each}
 </div>

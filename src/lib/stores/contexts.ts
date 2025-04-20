@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import type { AIContext, Note } from '@prisma/client'
 
-type ContextDTO = Pick<AIContext, 'prompt'>
+type ContextDTO = Pick<AIContext, 'title' | 'prompt'>
 type ContextWithNotes = AIContext & { notes: Note[] }
 
 const createContextsStore = () => {

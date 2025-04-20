@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Textarea } from '$lib/components/ui/textarea';
+	import { Input } from '$lib/components/ui/input';
 	import type { Note, AIContext } from '@prisma/client';
 	import { contexts } from '$lib/stores/contexts';
 	import SelectNotes from '$lib/components/context-card/select-notes.svelte';
@@ -8,10 +9,11 @@
 	import { Button } from '$lib/components/ui/button';
 	import { ChevronLeft } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
-	type AIContextData = Pick<AIContext, 'prompt'> & { notes: Note[] };
+	type AIContextData = Pick<AIContext, 'prompt' | 'title'> & { notes: Note[] };
 	let contextId = $state<string | null>(null);
 	let aiContext = $state<AIContextData>({
 		prompt: '',
+		title: '',
 		notes: []
 	});
 	let savedComponent = $state<Saved>();
@@ -39,8 +41,13 @@
 			<Button onclick={() => goto('/contexts')} variant="outline" size="icon">
 				<ChevronLeft />
 			</Button>
-			<h1 class="text-2xl font-bold">Prompt</h1>
+			<h1 class="text-2xl font-bold">New Context</h1>
 		</div>
+		<Input
+			placeholder="Enter context title..."
+			bind:value={aiContext.title}
+			oninput={debouncedSave}
+		/>
 		<Textarea
 			class="h-[40rem] max-h-[60rem] min-h-[40rem]"
 			placeholder="Enter your prompt..."

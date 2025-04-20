@@ -24,9 +24,10 @@ export const GET: RequestHandler = authenticatedApi(
 
 export const POST: RequestHandler = authenticatedApi(
     async ({ request }, user) => {
-        const { prompt, notes_ids } = await request.json()
+        const { title, prompt, notes_ids } = await request.json()
         const context = await prisma.aIContext.create({
             data: {
+                title,
                 prompt,
                 userId: user.id,
                 notes: {

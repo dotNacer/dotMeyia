@@ -25,6 +25,7 @@ export const PUT: RequestHandler = authenticatedApi(
         const context = await prisma.aIContext.update({
             where: { id: params.id, userId: user.id },
             data: {
+                title: data.title,
                 prompt: data.prompt,
                 notes: {
                     set: data.notes_ids.map((id: string) => ({ id })),

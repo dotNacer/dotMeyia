@@ -91,6 +91,7 @@ model Note {
 
 model AIContext {
   id        String   @id @default(uuid())
+  title     String 
   prompt    String
   notes     Note[]  
   createdAt DateTime @default(now())
