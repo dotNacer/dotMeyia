@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 @layer base {
     :root {
-        font-family: 'Geist' !important;
+        font-family: 'DM Sans', sans-serif !important;
     }
     .font-mono {
         font-family: 'Geist Mono', monospace !important;
+    }
+    .font-title {
+        font-family: 'Playfair Display', serif !important;
     }
 }
 
@@ -97,4 +101,12 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+code,
+pre,
+tt,
+kbd,
+samp {
+    font-family: 'Geist Mono', monospace;
 }

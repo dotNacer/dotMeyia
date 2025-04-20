@@ -75,7 +75,7 @@
 				onclick={() => (!chatStarted ? (selectedContext = context) : null)}
 				disabled={chatStarted}
 			>
-				{context.prompt}
+				{context.title}
 			</Button>
 		{/each}
 	</div>

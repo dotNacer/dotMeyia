@@ -10,7 +10,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { goto } from '$app/navigation';
 	import { ChevronLeft } from 'lucide-svelte';
-
+	import { fly } from 'svelte/transition';
 	let { data } = $props();
 	type AIContextData = Pick<AIContext, 'prompt' | 'title'> & { notes: Note[] };
 	let context: (AIContext & { notes: Note[] }) | null = $state(null);
@@ -43,7 +43,7 @@
 		<Saved bind:this={savedComponent} />
 	</div>
 
-	<div class="flex flex-row gap-8 p-8">
+	<div class="flex flex-row gap-8 p-8" in:fly={{ y: -20, duration: 300 }}>
 		<div class="flex w-1/2 flex-col gap-4">
 			<div class="flex items-center gap-4">
 				<Button onclick={() => goto('/contexts')} variant="outline" size="icon">

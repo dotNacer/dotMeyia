@@ -3,6 +3,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import type { Note, AIContext } from '@prisma/client';
 	import { contexts } from '$lib/stores/contexts';
+	import { fly } from 'svelte/transition';
 	import SelectNotes from '$lib/components/context-card/select-notes.svelte';
 	import { debounce } from '$lib/utils';
 	import Saved from '$lib/components/animations/Saved.svelte';
@@ -35,7 +36,7 @@
 	<Saved bind:this={savedComponent} />
 </div>
 
-<div class="flex flex-row gap-8 p-8">
+<div class="flex flex-row gap-8 p-8" in:fly={{ y: -20, duration: 300 }}>
 	<div class="flex w-1/2 flex-col gap-4">
 		<div class="flex items-center gap-4">
 			<Button onclick={() => goto('/contexts')} variant="outline" size="icon">
