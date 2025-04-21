@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { contexts } from '$lib/stores/contexts';
-	import type { AIContext } from '@prisma/client';
 	import { onMount } from 'svelte';
 	import { Input } from '$lib/components/ui/input';
-	let selectedContext: AIContext | null = $state(null);
+
+	// Selectionne le contexte préféré si selectionné
+	let selectedContextId: string | null = $state(contexts.selected.get());
 	let chatStarted = $state(false);
 	let userInput = $state('');
 
@@ -17,12 +18,12 @@
 	let messagesContainer: HTMLDivElement;
 
 	function startChat() {
-		if (!selectedContext) return;
+		if (!selectedContextId) return;
 
 		chat = new Chat({
 			api: '/api/ai/context',
 			body: {
-				contextId: selectedContext.id
+				contextId: selectedContextId
 			}
 		});
 
@@ -32,7 +33,7 @@
 	function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
 
-		if (!chatStarted && selectedContext) {
+		if (!chatStarted && selectedContextId) {
 			startChat();
 
 			if (!chat) return;
@@ -71,8 +72,8 @@
 	<div class="flex flex-col gap-2">
 		{#each $contexts as context}
 			<Button
-				variant={selectedContext?.id === context.id ? 'default' : 'outline'}
-				onclick={() => (!chatStarted ? (selectedContext = context) : null)}
+				variant={selectedContextId === context.id ? 'default' : 'outline'}
+				onclick={() => (!chatStarted ? (selectedContextId = context.id) : null)}
 				disabled={chatStarted}
 			>
 				{context.title}
@@ -102,7 +103,7 @@
 			placeholder="Saisissez votre message..."
 			class="flex-1"
 		/>
-		<Button type="submit" size="icon" disabled={!selectedContext}>
+		<Button type="submit" size="icon" disabled={!selectedContextId}>
 			<Send class="h-4 w-4" />
 		</Button>
 	</form>

@@ -8,10 +8,13 @@
 	import LogOut from '@lucide/svelte/icons/log-out';
 	import type { User } from 'better-auth';
 	import { Settings } from 'lucide-svelte';
+	import SettingsContainer from '$lib/components/settings/settings-container.svelte';
 	let { user }: { user: User } = $props();
 	const sidebar = useSidebar();
 	import { authClient } from '$lib/auth-client';
 	import { goto } from '$app/navigation';
+
+	let settingsMenuOpen = $state(false);
 
 	async function handleLogout() {
 		await authClient.signOut().then(() => {
@@ -70,8 +73,7 @@
 						<BadgeCheck />
 						Account
 					</DropdownMenu.Item>
-
-					<DropdownMenu.Item>
+					<DropdownMenu.Item onclick={() => (settingsMenuOpen = true)}>
 						<Settings />
 						Settings
 					</DropdownMenu.Item>
@@ -85,3 +87,5 @@
 		</DropdownMenu.Root>
 	</Sidebar.MenuItem>
 </Sidebar.Menu>
+
+<SettingsContainer bind:open={settingsMenuOpen} />

@@ -31,14 +31,11 @@
 	<div class="flex flex-col space-y-6">
 		<!-- Header section -->
 		<div class="flex items-center justify-between">
-			<h1 class="font-title text-3xl font-bold">Notes</h1>
-			<div class="flex items-center gap-2">
-				<div class="sm:hidden md:block">
-					<Button variant="outline" size="icon" onclick={() => goto('/notes/new')}>
-						<Plus class="size-4" />
-					</Button>
-				</div>
-				<Button variant="default" size="default" onclick={() => notes.fetch()}>Refresh</Button>
+			<h1 class="font-title text-3xl font-bold" in:fly={{ x: 20 }}>Notes</h1>
+			<div class="sm:hidden md:block">
+				<Button size="icon" onclick={() => goto('/notes/new')}>
+					<Plus class="size-4" />
+				</Button>
 			</div>
 		</div>
 

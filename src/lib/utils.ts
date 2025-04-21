@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
+import { User, BrainCircuit } from 'lucide-svelte'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -37,3 +38,34 @@ export const PLACEHOLDER_CONTENTS = [
     "What's on your mind?",
     'What was Mido doing last night ?',
 ]
+
+export const SETTINGS_CATEGORIES = [
+    {
+        id: 'ai-settings',
+        title: 'AI Settings',
+        icon: BrainCircuit,
+    },
+    {
+        id: 'user-settings',
+        title: 'User Settings',
+        icon: User,
+    },
+]
+
+// Helper to safely access localStorage (for SSR compatibility)
+export const getFromLocalStorage = (key: string): string | null => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem(key)
+    }
+    return null
+}
+
+export const saveToLocalStorage = (key: string, value: string | null): void => {
+    if (typeof window !== 'undefined') {
+        if (value === null) {
+            localStorage.removeItem(key)
+        } else {
+            localStorage.setItem(key, value)
+        }
+    }
+}
