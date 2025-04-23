@@ -3,13 +3,11 @@ import { streamText } from 'ai'
 
 import { env } from '$env/dynamic/private'
 import prisma from '$lib/server/prisma'
+import type { Note } from '@prisma/client'
 
 const google = createGoogleGenerativeAI({
     apiKey: env.GOOGLE_API_KEY,
 })
-
-// Récupere un contexte a l'aide de son ID
-//
 
 export async function POST({ request }) {
     const { messages, contextId } = await request.json()
@@ -25,7 +23,7 @@ export async function POST({ request }) {
 
     let fullPrompt = `
 
-    Tu es un Assistant Agent intelligent du nom de Meyïa conçu pour aider les utilisateurs de manière efficace et personnalisée.
+    Tu es un Assistant Agent intelligent du nom de Meÿia conçu pour aider les utilisateurs de manière efficace et personnalisée.
 
     ## Ton rôle
     - Répondre aux questions des utilisateurs avec précision et clarté
@@ -46,9 +44,10 @@ export async function POST({ request }) {
     IMPORTANT !!! 
     Tu utilisera en priorité les notes et le prompt personnalisé de l'utilisateur.
     User custom prompt: ${context?.prompt}
-    Notes: ${context?.notes.map((note) => note.content).join('\n')}
+    Notes: ${context?.notes ? formatDatas(context?.notes satisfies Note[]) : 'Aucune note fournie'}
     `
 
+    //TODO: Devrais-je enlever le await ?
     const result = await streamText({
         model: google('gemini-2.0-flash'),
         system: fullPrompt,
@@ -56,4 +55,17 @@ export async function POST({ request }) {
     })
 
     return result.toDataStreamResponse()
+}
+
+function formatDatas(notes: Note[]) {
+    let result = ''
+
+    notes.forEach(
+        (note) =>
+            (result +=
+                '###### ' + note.title + ' ######\n' + note.content + '\n')
+    )
+
+    // return notes.map((note) => note.content).join('\n')
+    return result
 }

@@ -16,7 +16,9 @@
 	<HoverCard.Content class={`${width} overflow-y-auto ${height}`}>
 		<div class="flex justify-between space-x-4">
 			<div class="space-y-1">
-				<p class="text-sm" style="white-space: pre-line;">{note.content}</p>
+				<p class="text-sm" style="white-space: pre-line;">
+					{note.content != '' ? note.content : 'Note vide'}
+				</p>
 			</div>
 		</div>
 	</HoverCard.Content>
