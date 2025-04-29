@@ -1,6 +1,7 @@
 <script lang="ts" module>
 	import Home from '@lucide/svelte/icons/home';
 	import FileText from '@lucide/svelte/icons/file-text';
+	import BotMessageSquare from '@lucide/svelte/icons/bot-message-square';
 	import BrainCircuit from '@lucide/svelte/icons/brain-circuit';
 	// This is sample data.
 	const data = {
@@ -23,6 +24,11 @@
 						title: 'Contexts',
 						url: '/contexts',
 						icon: BrainCircuit
+					},
+					{
+						title: 'Test',
+						url: '/test',
+						icon: BotMessageSquare
 					}
 				]
 			}

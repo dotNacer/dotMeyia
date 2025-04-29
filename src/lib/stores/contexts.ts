@@ -1,17 +1,42 @@
+import { getFromLocalStorage, saveToLocalStorage } from '$lib/utils'
 import { writable } from 'svelte/store'
 import type { AIContext, Note } from '@prisma/client'
 
-type ContextDTO = Pick<AIContext, 'prompt'>
+type ContextDTO = Pick<AIContext, 'title' | 'prompt'>
 type ContextWithNotes = AIContext & { notes: Note[] }
+
+const FAVORITE_CONTEXT_KEY = 'favoriteContextId'
 
 const createContextsStore = () => {
     const { subscribe, set, update } = writable<ContextWithNotes[]>([])
+
+    const favoriteContextId = writable<string | null>(
+        getFromLocalStorage(FAVORITE_CONTEXT_KEY)
+    )
 
     // TODO : Wrapper dans un tryCatch
     return {
         subscribe,
         set,
         update,
+        selected: {
+            // Sélectionner le contexte préferé
+            select: (id: string) => {
+                favoriteContextId.set(id)
+                saveToLocalStorage(FAVORITE_CONTEXT_KEY, id)
+            },
+
+            // Unfavorite le contexte préf
+            clear: () => {
+                favoriteContextId.set(null)
+                saveToLocalStorage(FAVORITE_CONTEXT_KEY, null)
+            },
+
+            // Get the ID
+            get: () => {
+                return getFromLocalStorage(FAVORITE_CONTEXT_KEY)
+            },
+        },
         fetch: async () => {
             const response = await fetch('/api/contexts')
             const data = await response.json()

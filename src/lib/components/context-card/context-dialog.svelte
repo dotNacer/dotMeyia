@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { AIContext, Note } from '@prisma/client';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import NoteHover from '$lib/components/note-card/note-hover.svelte';
 	import type { Snippet } from 'svelte';
 	import { ExternalLink } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
@@ -17,7 +18,7 @@
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
-			<Dialog.Title class="mb-4">Context #{context.id.slice(0, 8)}</Dialog.Title>
+			<Dialog.Title class="mb-4">{context.title}</Dialog.Title>
 			<Dialog.Description class="flex flex-col gap-4">
 				<div class="flex flex-col gap-2">
 					<p class="text-sm font-medium">Prompt</p>
@@ -30,14 +31,16 @@
 					<p class="text-sm font-medium">Linked Notes ({context.notes.length})</p>
 					<ScrollArea class="h-56 w-full space-y-2 rounded-md">
 						{#each context.notes as note}
-							<div
-								class=" mt-2 flex items-center justify-between rounded-md border bg-background px-4 py-2"
-							>
-								<p class="text-foreground">{note.title}</p>
-								<Button variant="ghost" size="icon" onclick={() => goto(`/notes/${note.id}`)}>
-									<ExternalLink />
-								</Button>
-							</div>
+							<NoteHover {note}>
+								<div
+									class=" mt-2 flex items-center justify-between rounded-md border bg-background px-4 py-2"
+								>
+									<p class="text-foreground">{note.title}</p>
+									<Button variant="ghost" size="icon" onclick={() => goto(`/notes/${note.id}`)}>
+										<ExternalLink />
+									</Button>
+								</div>
+							</NoteHover>
 						{/each}
 					</ScrollArea>
 				</div>

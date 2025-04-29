@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import Saved from '$lib/components/animations/Saved.svelte';
 	import { ChevronLeft } from 'lucide-svelte';
+	import { fly } from 'svelte/transition';
 
 	type NoteData = Pick<Note, 'title' | 'content'>;
 
@@ -32,7 +33,7 @@
 	const debouncedSave = debounce(handleSave, 700);
 </script>
 
-<div class="flex h-full w-full flex-col gap-4 p-4">
+<div class="flex h-full w-full flex-col gap-4 p-4" in:fly={{ y: -20, duration: 300 }}>
 	<div class="flex items-center justify-between gap-2">
 		<div class="flex flex-1 items-center gap-4">
 			<Button onclick={() => goto('/notes')} variant="outline" size="icon">

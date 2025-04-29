@@ -26,6 +26,7 @@ model User {
   accounts      Account[]
   notes         Note[]
   contexts      AIContext[]
+  categories    Category[]
   @@unique([email])
   @@map("user")
 }
@@ -91,6 +92,7 @@ model Note {
 
 model AIContext {
   id        String   @id @default(uuid())
+  title     String 
   prompt    String
   notes     Note[]  
   createdAt DateTime @default(now())
@@ -100,4 +102,16 @@ model AIContext {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("context")
+}
+
+//TODO: Pas de co donc a check
+model Category {
+  id      String  @id @default(uuid())
+  title   String
+  weight  Float // Poids entre 0 et 1, a voir si c'est accurate avec l'IA   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

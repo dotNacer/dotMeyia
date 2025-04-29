@@ -8,6 +8,7 @@
 	import { ChevronLeft } from 'lucide-svelte';
 	import type { Note } from '@prisma/client';
 	import { PLACEHOLDER_CONTENTS } from '$lib/utils';
+	import { fly } from 'svelte/transition';
 	let { data } = $props();
 	let note: Note | null = $state(null);
 	type NoteData = Pick<Note, 'title' | 'content'>;
@@ -39,7 +40,7 @@
 	});
 </script>
 
-<div class="flex h-full w-full flex-col gap-4 p-4">
+<div class="flex h-full w-full flex-col gap-4 p-4" in:fly={{ y: -20, duration: 300 }}>
 	{#if note}
 		<div class="flex items-center justify-between gap-2">
 			<div class="flex flex-1 items-center gap-4">

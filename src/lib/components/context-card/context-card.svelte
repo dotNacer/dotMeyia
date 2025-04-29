@@ -8,13 +8,13 @@
 </script>
 
 <ContextDialog {context}>
-	<Card.Root class="h-full overflow-hidden transition-all hover:shadow-md">
+	<Card.Root class="h-56 transition-all hover:shadow-md">
 		<Card.Header class="flex flex-row items-center justify-between">
-			<Card.Title>Context #{context.id.slice(0, 8)}</Card.Title>
+			<Card.Title>{context.title}</Card.Title>
 			<ContextCardDropdown id={context.id} />
 		</Card.Header>
 		<Card.Content>
-			<Card.Description class="text-left">{context.prompt}</Card.Description>
+			<Card.Description class="line-clamp-4 text-left">{context.prompt}</Card.Description>
 		</Card.Content>
 	</Card.Root>
 </ContextDialog>
