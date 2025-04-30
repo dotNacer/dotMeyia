@@ -7,7 +7,6 @@
 	import type { HTMLFormAttributes } from 'svelte/elements';
 
 	import Calculator from 'lucide-svelte/icons/calculator';
-	import Calendar from 'lucide-svelte/icons/calendar';
 	import CreditCard from 'lucide-svelte/icons/credit-card';
 	import Settings from 'lucide-svelte/icons/settings';
 	import Smile from 'lucide-svelte/icons/smile';
@@ -38,19 +37,21 @@
 		<Sidebar.Group class="py-0">
 			<Sidebar.GroupContent class="relative">
 				<Label for="search" class="sr-only">Search</Label>
-				<Sidebar.Input
+				<Sidebar.MenuButton
+					class="flex items-center justify-between border"
 					id="search"
-					placeholder="Search..."
-					class="pl-8"
 					onclick={(e) => {
 						open = !open;
 						e.preventDefault();
 					}}
-				/>
-
-				<Search
-					class="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50"
-				/>
+				>
+					<p class="text-muted-foreground">Search...</p>
+					<kbd
+						class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
+					>
+						<span class="text-xs">⌘</span>K
+					</kbd>
+				</Sidebar.MenuButton>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
 	</form>
@@ -72,10 +73,10 @@
 		</Command.Group>
 
 		<Command.Separator />
-		<Command.Group heading="Suggestions">
+		<Command.Group heading="Search">
 			<Command.Item>
-				<Calendar class="mr-2 size-4" />
-				<span>Calendar</span>
+				<Search class="mr-2 size-4" />
+				<span>Search</span>
 			</Command.Item>
 			<Command.Item>
 				<Smile class="mr-2 size-4" />

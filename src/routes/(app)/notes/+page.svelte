@@ -3,6 +3,7 @@
 	import { Notebook, Plus } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { onMount } from 'svelte';
+	import { Input } from '$lib/components/ui/input';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -32,10 +33,13 @@
 		<!-- Header section -->
 		<div class="flex items-center justify-between">
 			<h1 class="font-title text-3xl font-bold" in:fly={{ x: 20 }}>Notes</h1>
-			<div class="sm:hidden md:block">
-				<Button size="icon" onclick={() => goto('/notes/new')}>
-					<Plus class="size-4" />
-				</Button>
+			<div class="flex items-center gap-2">
+				<Input placeholder="Search" />
+				<div class="sm:hidden md:block">
+					<Button size="icon" onclick={() => goto('/notes/new')}>
+						<Plus class="size-4" />
+					</Button>
+				</div>
 			</div>
 		</div>
 
