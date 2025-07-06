@@ -10,7 +10,7 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Content class="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
+	<Dialog.Content class="overflow-hidden p-0 md:max-h-[600px] md:max-w-[700px] lg:max-w-[1000px]">
 		<Sidebar.Provider>
 			<Sidebar.Root>
 				<Sidebar.Content>

@@ -9,6 +9,7 @@
 
 	import { contexts } from '$lib/stores/contexts';
 	import { onMount } from 'svelte';
+	import ApiKeysManager from './ApiKeysManager.svelte';
 
 	let favoriteContext: string | undefined = $state(contexts.selected.get() as string);
 
@@ -26,6 +27,7 @@
 			prompt: 'Meÿia prompt'
 		}
 	];
+
 	onMount(() => {
 		contexts.fetch();
 	});
@@ -67,5 +69,7 @@
 		</div>
 	{:else if selectedID === 'user-settings'}
 		<h1>User Settings</h1>
+	{:else if selectedID === 'api-settings'}
+		<ApiKeysManager />
 	{/if}
 </Sidebar.Inset>

@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
-import { User, BrainCircuit } from 'lucide-svelte'
+import { User, BrainCircuit, Code } from 'lucide-svelte'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -49,6 +49,11 @@ export const SETTINGS_CATEGORIES = [
         id: 'user-settings',
         title: 'User Settings',
         icon: User,
+    },
+    {
+        id: 'api-settings',
+        title: 'API Settings',
+        icon: Code,
     },
 ]
 

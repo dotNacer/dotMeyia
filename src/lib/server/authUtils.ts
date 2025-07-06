@@ -1,17 +1,92 @@
 import { auth } from '$lib/server/auth'
+import prisma from '$lib/server/prisma'
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit'
 import { error } from '@sveltejs/kit'
 import type { User } from 'better-auth'
 
 /**
- * Wrapper to handle session authentication for API routes or server load functions.
- * Retrieves the session and checks for a valid user ID.
+ * Checks if the request has a valid API key and returns the associated user.
  *
  * @param event - The RequestEvent object from SvelteKit.
- * @returns The authenticated session object.
+ * @returns The user associated with the API key, or null if invalid.
+ */
+async function checkApiKeyAuth(event: RequestEvent): Promise<User | null> {
+    const authHeader = event.request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return null
+    }
+
+    const token = authHeader.substring(7) // Remove 'Bearer ' prefix
+
+    // Basic token validation
+    if (!token || token.length < 10 || token.includes(' ')) {
+        return null
+    }
+
+    let apiKey
+    try {
+        apiKey = await prisma.apiKey.findUnique({
+            where: {
+                token: token,
+                isActive: true,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        // Add other needed user fields but exclude sensitive data
+                    },
+                },
+            },
+        })
+    } catch (error) {
+        console.error('Database error during API key authentication:', error)
+        return null
+    }
+
+    if (!apiKey || !apiKey.user) {
+        return null
+    }
+
+    // Check if API key has expired
+    if (apiKey.expiresAt && apiKey.expiresAt < new Date()) {
+        return null
+    }
+
+    // Update last used timestamp asynchronously to avoid blocking authentication
+    prisma.apiKey
+        .update({
+            where: { id: apiKey.id },
+            data: { lastUsedAt: new Date() },
+        })
+        .catch((error) => {
+            console.error(
+                'Failed to update API key last used timestamp:',
+                error
+            )
+        })
+
+    return apiKey.user as User
+}
+
+/**
+ * Wrapper to handle session authentication for API routes or server load functions.
+ * Retrieves the session and checks for a valid user ID, or checks for a valid API key.
+ *
+ * @param event - The RequestEvent object from SvelteKit.
+ * @returns The authenticated user object.
  * @throws Will throw a 401 error if the user is not authenticated.
  */
 export async function requireAuth(event: RequestEvent): Promise<User> {
+    // First, try API key authentication
+    const apiUser = await checkApiKeyAuth(event)
+    if (apiUser) {
+        return apiUser
+    }
+
+    // If no API key, try session authentication
     const session = await auth.api.getSession({
         headers: event.request.headers,
     })

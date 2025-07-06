@@ -27,6 +27,7 @@ model User {
   notes         Note[]
   contexts      AIContext[]
   categories    Category[]
+  apiKeys       ApiKey[]
   @@unique([email])
   @@map("user")
 }
@@ -116,4 +117,19 @@ model Category {
 
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ApiKey {
+  id        String    @id @default(uuid())
+  name      String
+  token     String
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  lastUsedAt DateTime?
+  expiresAt DateTime?
+  isActive  Boolean   @default(true)
+
+  @@unique([token])
+  @@map("api_key")
 }

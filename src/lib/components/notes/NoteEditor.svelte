@@ -5,6 +5,9 @@
 	import { ChevronLeft } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
 
+	import { onMount, onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
+
 	type NoteData = {
 		title: string;
 		content: string;
@@ -31,6 +34,15 @@
 	function handleBack() {
 		history.back();
 	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.repeat) return;
+
+		if (event.key === 'Escape') handleBack();
+	}
+	onMount(() => {
+		if (browser) document.addEventListener('keydown', handleKeyDown);
+	});
 </script>
 
 <div class="flex h-full w-full flex-col gap-4 p-4" in:fly={{ y: -20, duration: 300 }}>
