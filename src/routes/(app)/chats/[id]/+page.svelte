@@ -3,11 +3,11 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
 	import { Card, CardContent } from '$lib/components/ui/card';
-	import { ArrowLeft, Send, User, Bot, Loader2 } from 'lucide-svelte';
+	import { ArrowLeft, Bot, Loader2 } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
-	import Markdown from '$lib/components/ui/markdown.svelte';
+	import ChatMessage from '$lib/components/chat/chat-message.svelte';
+	import ChatInput from '$lib/components/chat/chat-input.svelte';
 
 	interface Message {
 		id: string;
@@ -27,13 +27,12 @@
 		messages: Message[];
 	}
 
-	let chat: Chat | null = null;
-	let messageInput = '';
-	let loading = false;
-	let sending = false;
-	let messagesContainer: HTMLElement;
+	let chat = $state<Chat | null>(null);
+	let loading = $state(false);
+	let sending = $state(false);
+	let messagesContainer = $state<HTMLElement>();
 
-	$: chatId = $page.params.id;
+	let chatId = $derived($page.params.id);
 
 	onMount(async () => {
 		await loadChat();
@@ -59,11 +58,9 @@
 		}
 	}
 
-	async function sendMessage() {
-		if (!messageInput.trim() || sending) return;
+	async function sendMessage(messageContent: string) {
+		if (!messageContent.trim() || sending) return;
 
-		const messageContent = messageInput.trim();
-		messageInput = '';
 		sending = true;
 
 		try {
@@ -88,13 +85,10 @@
 			} else {
 				const error = await response.json();
 				toast.error(error.error || "Erreur lors de l'envoi du message");
-				// Restaurer le message dans l'input
-				messageInput = messageContent;
 			}
 		} catch (error) {
 			console.error('Error sending message:', error);
 			toast.error("Erreur lors de l'envoi du message");
-			messageInput = messageContent;
 		} finally {
 			sending = false;
 		}
@@ -106,23 +100,13 @@
 		}
 	}
 
-	function formatTime(dateString: string) {
-		return new Date(dateString).toLocaleTimeString('fr-FR', {
-			hour: '2-digit',
-			minute: '2-digit'
-		});
-	}
+
 
 	function goBack() {
 		goto('/chats');
 	}
 
-	function handleKeyPress(event: KeyboardEvent) {
-		if (event.key === 'Enter' && !event.shiftKey) {
-			event.preventDefault();
-			sendMessage();
-		}
-	}
+
 </script>
 
 <svelte:head>
@@ -133,7 +117,7 @@
 	<!-- Header -->
 	<div class="border-b bg-white dark:bg-gray-900">
 		<div class="flex items-center gap-4 p-4">
-			<Button variant="ghost" size="sm" onclick={goBack} class="flex items-center gap-2">
+			<Button variant="ghost" size="sm" on:click={goBack} class="flex items-center gap-2">
 				<ArrowLeft class="h-4 w-4" />
 				Retour
 			</Button>
@@ -174,40 +158,7 @@
 					</div>
 				{:else}
 					{#each chat.messages as message}
-						<div class="flex gap-3 {message.role === 'USER' ? 'justify-end' : 'justify-start'}">
-							{#if message.role === 'ASSISTANT'}
-								<div
-									class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600"
-								>
-									<Bot class="h-4 w-4 text-white" />
-								</div>
-							{/if}
-
-							<Card
-								class="max-w-[80%] {message.role === 'USER'
-									? 'bg-blue-600 text-white'
-									: 'bg-gray-100 dark:bg-gray-800'}"
-							>
-								<CardContent class="p-3">
-									{#if message.role === 'ASSISTANT'}
-										<Markdown content={message.content} />
-									{:else}
-										<p class="whitespace-pre-wrap text-sm">{message.content}</p>
-									{/if}
-									<p class="mt-2 text-xs opacity-70">
-										{formatTime(message.createdAt)}
-									</p>
-								</CardContent>
-							</Card>
-
-							{#if message.role === 'USER'}
-								<div
-									class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-600"
-								>
-									<User class="h-4 w-4 text-white" />
-								</div>
-							{/if}
-						</div>
+						<ChatMessage {message} />
 					{/each}
 				{/if}
 
@@ -234,21 +185,10 @@
 
 	<!-- Input -->
 	<div class="border-t bg-white p-4 dark:bg-gray-900">
-		<div class="flex gap-3">
-			<Input
-				bind:value={messageInput}
-				placeholder="Tapez votre message..."
-				onkeypress={handleKeyPress}
-				disabled={sending}
-				class="flex-1"
-			/>
-			<Button onclick={sendMessage} disabled={!messageInput.trim() || sending} size="icon">
-				{#if sending}
-					<Loader2 class="h-4 w-4 animate-spin" />
-				{:else}
-					<Send class="h-4 w-4" />
-				{/if}
-			</Button>
-		</div>
+		<ChatInput 
+			onSend={sendMessage}
+			loading={sending}
+			disabled={loading}
+		/>
 	</div>
 </div>

@@ -8,7 +8,8 @@
 	}
 
 	let { content, class: className = '' } = $props<Props>();
-	let container: HTMLElement;
+	let container = $state<HTMLElement>();
+	let htmlContent = $derived(marked(content));
 
 	onMount(() => {
 		if (container) {
@@ -68,8 +69,6 @@
 			});
 		}
 	});
-
-	$: htmlContent = marked(content);
 </script>
 
 <div 

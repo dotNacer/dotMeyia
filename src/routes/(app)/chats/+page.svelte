@@ -26,8 +26,8 @@
 		};
 	}
 
-	let chats: Chat[] = [];
-	let loading = true;
+	let chats = $state<Chat[]>([]);
+	let loading = $state(true);
 
 	onMount(async () => {
 		await loadChats();

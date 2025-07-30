@@ -15,11 +15,11 @@
 		prompt: string;
 	}
 
-	let title = '';
-	let selectedContextId = '';
-	let contexts: Context[] = [];
-	let loading = false;
-	let contextsLoading = true;
+	let title = $state('');
+	let selectedContextId = $state('');
+	let contexts = $state<Context[]>([]);
+	let loading = $state(false);
+	let contextsLoading = $state(true);
 
 	onMount(async () => {
 		await loadContexts();
@@ -84,7 +84,7 @@
 
 <div class="container mx-auto max-w-2xl p-6">
 	<div class="mb-8 flex items-center gap-4">
-		<Button variant="ghost" size="sm" onclick={goBack} class="flex items-center gap-2">
+		<Button variant="ghost" size="sm" on:click={goBack} class="flex items-center gap-2">
 			<ArrowLeft class="h-4 w-4" />
 			Retour
 		</Button>
@@ -150,8 +150,8 @@
 			</div>
 
 			<div class="flex gap-3 pt-4">
-				<Button variant="outline" onclick={goBack}>Annuler</Button>
-				<Button onclick={createChat} disabled={loading || !title.trim()}>
+				<Button variant="outline" on:click={goBack}>Annuler</Button>
+				<Button on:click={createChat} disabled={loading || !title.trim()}>
 					{loading ? 'Création...' : 'Créer le chat'}
 				</Button>
 			</div>
