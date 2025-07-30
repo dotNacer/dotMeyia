@@ -7,7 +7,7 @@
 	import { Card, CardContent } from '$lib/components/ui/card';
 	import { ArrowLeft, Send, User, Bot, Loader2 } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
-	import { marked } from 'marked';
+	import Markdown from '$lib/components/ui/markdown.svelte';
 
 	interface Message {
 		id: string;
@@ -106,9 +106,7 @@
 		}
 	}
 
-	function formatMessage(content: string) {
-		return marked(content);
-	}
+
 
 	function formatTime(dateString: string) {
 		return new Date(dateString).toLocaleTimeString('fr-FR', {
@@ -191,7 +189,7 @@
 							<Card class="max-w-[80%] {message.role === 'USER' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-800'}">
 								<CardContent class="p-3">
 									{#if message.role === 'ASSISTANT'}
-										<div class="prose prose-sm dark:prose-invert max-w-none" set:html={formatMessage(message.content)} />
+										<Markdown content={message.content} />
 									{:else}
 										<p class="text-sm whitespace-pre-wrap">{message.content}</p>
 									{/if}
