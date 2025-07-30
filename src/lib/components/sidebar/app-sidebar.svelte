@@ -3,6 +3,7 @@
 	import FileText from '@lucide/svelte/icons/file-text';
 	import BotMessageSquare from '@lucide/svelte/icons/bot-message-square';
 	import BrainCircuit from '@lucide/svelte/icons/brain-circuit';
+	import MessageSquare from '@lucide/svelte/icons/message-square';
 	// This is sample data.
 	const data = {
 		navMain: [
@@ -24,6 +25,11 @@
 						title: 'Contexts',
 						url: '/contexts',
 						icon: BrainCircuit
+					},
+					{
+						title: 'Chats',
+						url: '/chats',
+						icon: MessageSquare
 					},
 					{
 						title: 'Test',

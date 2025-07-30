@@ -28,6 +28,7 @@ model User {
   contexts      AIContext[]
   categories    Category[]
   apiKeys       ApiKey[]
+  chats         Chat[]
   @@unique([email])
   @@map("user")
 }
@@ -102,6 +103,7 @@ model AIContext {
 
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chats     Chat[]
 
   @@map("context")
 }
@@ -132,4 +134,34 @@ model ApiKey {
 
   @@unique([token])
   @@map("api_key")
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  title     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contextId String?
+  context   AIContext? @relation(fields: [contextId], references: [id], onDelete: SetNull)
+  messages  ChatMessage[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("chat")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  content   String
+  role      MessageRole
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("chat_message")
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
 }
