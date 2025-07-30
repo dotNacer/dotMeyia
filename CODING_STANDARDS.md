@@ -1,85 +1,85 @@
-# Standards de Codage - DotMeyia
+# Coding Standards - DotMeyia
 
-## Principes généraux
+## General Principles
 
-### Philosophie du code
-- **Lisibilité avant tout** : Le code doit être facile à lire et à comprendre
-- **Simplicité** : Privilégier les solutions simples et directes
-- **Cohérence** : Maintenir une cohérence dans tout le codebase
-- **Maintenabilité** : Écrire du code qui sera facile à maintenir et à faire évoluer
+### Code Philosophy
+- **Readability First** : Code must be easy to read and understand
+- **Simplicity** : Prefer simple and direct solutions
+- **Consistency** : Maintain consistency across the entire codebase
+- **Maintainability** : Write code that will be easy to maintain and evolve
 
-### Principes SOLID
-- **Single Responsibility** : Chaque fonction/composant a une seule responsabilité
-- **Open/Closed** : Ouvert à l'extension, fermé à la modification
-- **Liskov Substitution** : Les sous-types sont substituables à leurs types de base
-- **Interface Segregation** : Préférer plusieurs interfaces spécifiques à une interface générale
-- **Dependency Inversion** : Dépendre d'abstractions, pas de concretions
+### SOLID Principles
+- **Single Responsibility** : Each function/component has a single responsibility
+- **Open/Closed** : Open for extension, closed for modification
+- **Liskov Substitution** : Subtypes are substitutable for their base types
+- **Interface Segregation** : Prefer multiple specific interfaces over one general interface
+- **Dependency Inversion** : Depend on abstractions, not concretions
 
-## Structure et organisation
+## Structure and Organization
 
-### Architecture des dossiers
+### Folder Architecture
 ```
 src/
 ├── lib/
-│   ├── components/          # Composants réutilisables
-│   │   ├── ui/             # Composants UI de base (Button, Input, etc.)
-│   │   ├── feature/        # Composants spécifiques aux fonctionnalités
-│   │   └── layout/         # Composants de mise en page
-│   ├── stores/             # Stores Svelte pour l'état global
-│   ├── server/             # Code côté serveur uniquement
-│   ├── utils/              # Utilitaires et helpers
-│   └── types/              # Types TypeScript partagés
-├── routes/                 # Routes SvelteKit
-│   ├── (app)/              # Routes protégées
-│   ├── (auth)/             # Routes d'authentification
-│   └── api/                # Routes API
-└── app.html               # Template HTML principal
+│   ├── components/          # Reusable components
+│   │   ├── ui/             # Base UI components (Button, Input, etc.)
+│   │   ├── feature/        # Feature-specific components
+│   │   └── layout/         # Layout components
+│   ├── stores/             # Svelte stores for global state
+│   ├── server/             # Server-side only code
+│   ├── utils/              # Utilities and helpers
+│   └── types/              # Shared TypeScript types
+├── routes/                 # SvelteKit routes
+│   ├── (app)/              # Protected routes
+│   ├── (auth)/             # Authentication routes
+│   └── api/                # API routes
+└── app.html               # Main HTML template
 ```
 
-### Convention de nommage
+### Naming Conventions
 
-#### Fichiers et dossiers
-- **kebab-case** pour les noms de fichiers et dossiers : `user-profile.svelte`
-- **PascalCase** pour les composants Svelte : `UserProfile.svelte`
-- **camelCase** pour les fichiers utilitaires : `formatDate.ts`
-- **UPPER_SNAKE_CASE** pour les constantes : `API_ENDPOINTS`
+#### Files and Folders
+- **kebab-case** for file and folder names : `user-profile.svelte`
+- **PascalCase** for Svelte components : `UserProfile.svelte`
+- **camelCase** for utility files : `formatDate.ts`
+- **UPPER_SNAKE_CASE** for constants : `API_ENDPOINTS`
 
-#### Variables et fonctions
-- **camelCase** pour les variables et fonctions : `getUserData()`
-- **PascalCase** pour les classes et types : `UserProfile`
-- **UPPER_SNAKE_CASE** pour les constantes globales : `MAX_RETRY_ATTEMPTS`
+#### Variables and Functions
+- **camelCase** for variables and functions : `getUserData()`
+- **PascalCase** for classes and types : `UserProfile`
+- **UPPER_SNAKE_CASE** for global constants : `MAX_RETRY_ATTEMPTS`
 
-#### Composants Svelte
-- **PascalCase** pour les noms de composants : `<UserCard />`
-- **kebab-case** pour les props : `user-data`, `is-loading`
-- **camelCase** pour les événements : `onUserSelect`, `onDataLoad`
+#### Svelte Components
+- **PascalCase** for component names : `<UserCard />`
+- **kebab-case** for props : `user-data`, `is-loading`
+- **camelCase** for events : `onUserSelect`, `onDataLoad`
 
-## Standards Svelte
+## Svelte Standards
 
-### Syntaxe Svelte 5 (Runes)
+### Svelte 5 Syntax (Runes)
 ```typescript
-// ✅ Bon - Utilisation des runes Svelte 5
+// ✅ Good - Using Svelte 5 runes
 let count = $state(0);
 let doubled = $derived(count * 2);
 let { data } = $props();
 
-// ❌ Éviter - Ancienne syntaxe Svelte 4
+// ❌ Avoid - Old Svelte 4 syntax
 let count = writable(0);
 let doubled = derived(count, $count => $count * 2);
 ```
 
-### Structure des composants
+### Component Structure
 ```svelte
 <script lang="ts">
-  // 1. Imports externes
+  // 1. External imports
   import { onMount } from 'svelte';
   import { Button } from '$lib/components/ui/button';
   
-  // 2. Imports internes
+  // 2. Internal imports
   import type { User } from '$lib/types';
   import { formatDate } from '$lib/utils/date';
   
-  // 3. Props et état
+  // 3. Props and state
   let { user } = $props<{ user: User }>();
   let isLoading = $state(false);
   let error = $state<string | null>(null);
@@ -89,12 +89,12 @@ let doubled = derived(count, $count => $count * 2);
   
   // 5. Lifecycle
   onMount(() => {
-    // Initialisation
+    // Initialization
   });
   
   // 6. Event handlers
   function handleClick() {
-    // Logique
+    // Logic
   }
 </script>
 
@@ -105,21 +105,21 @@ let doubled = derived(count, $count => $count * 2);
 </div>
 
 <style>
-  /* Styles scoped */
+  /* Scoped styles */
   .user-card {
     /* ... */
   }
 </style>
 ```
 
-### Gestion de l'état
+### State Management
 ```typescript
-// ✅ Bon - Stores simples et réactifs
+// ✅ Good - Simple and reactive stores
 import { writable } from 'svelte/store';
 
 export const userStore = writable<User | null>(null);
 
-// Actions pour manipuler l'état
+// Actions to manipulate state
 export const userActions = {
   setUser: (user: User) => userStore.set(user),
   clearUser: () => userStore.set(null),
@@ -129,11 +129,11 @@ export const userActions = {
 };
 ```
 
-## Standards TypeScript
+## TypeScript Standards
 
-### Typage strict
+### Strict Typing
 ```typescript
-// ✅ Bon - Typage explicite
+// ✅ Good - Explicit typing
 interface User {
   id: string;
   name: string;
@@ -149,15 +149,15 @@ function createUser(userData: Omit<User, 'id' | 'createdAt'>): User {
   };
 }
 
-// ❌ Éviter - any ou types implicites
+// ❌ Avoid - any or implicit types
 function createUser(userData: any): any {
   return userData;
 }
 ```
 
-### Types utilitaires
+### Utility Types
 ```typescript
-// Types communs
+// Common types
 type ApiResponse<T> = {
   data: T;
   error: string | null;
@@ -166,7 +166,7 @@ type ApiResponse<T> = {
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 
-// Props types pour les composants
+// Props types for components
 interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'danger';
   size?: 'sm' | 'md' | 'lg';
@@ -175,11 +175,11 @@ interface ButtonProps {
 }
 ```
 
-## Standards CSS/Tailwind
+## CSS/Tailwind Standards
 
-### Classes Tailwind
+### Tailwind Classes
 ```svelte
-<!-- ✅ Bon - Classes organisées et lisibles -->
+<!-- ✅ Good - Organized and readable classes -->
 <div class="
   flex items-center justify-between
   p-4 bg-white rounded-lg shadow-sm
@@ -191,13 +191,13 @@ interface ButtonProps {
   </h2>
 </div>
 
-<!-- ❌ Éviter - Classes mélangées et difficiles à lire -->
+<!-- ❌ Avoid - Mixed and hard-to-read classes -->
 <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow dark:bg-gray-800 dark:text-white">
 ```
 
-### Utilitaires CSS personnalisés
+### Custom CSS Utilities
 ```css
-/* ✅ Bon - Classes utilitaires réutilisables */
+/* ✅ Good - Reusable utility classes */
 .btn-primary {
   @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors;
 }
@@ -206,7 +206,7 @@ interface ButtonProps {
   @apply bg-white rounded-lg shadow-sm p-6 dark:bg-gray-800;
 }
 
-/* ❌ Éviter - Styles inline ou trop spécifiques */
+/* ❌ Avoid - Inline styles or too specific */
 .user-card {
   background: #fff;
   border-radius: 8px;
@@ -215,11 +215,11 @@ interface ButtonProps {
 }
 ```
 
-## Gestion des erreurs
+## Error Handling
 
-### Try-catch patterns
+### Try-catch Patterns
 ```typescript
-// ✅ Bon - Gestion d'erreur structurée
+// ✅ Good - Structured error handling
 async function fetchUserData(userId: string): Promise<ApiResponse<User>> {
   try {
     const response = await fetch(`/api/users/${userId}`);
@@ -241,7 +241,7 @@ async function fetchUserData(userId: string): Promise<ApiResponse<User>> {
 }
 ```
 
-### Composants d'erreur
+### Error Components
 ```svelte
 <script lang="ts">
   let { error, onRetry } = $props<{
@@ -254,7 +254,7 @@ async function fetchUserData(userId: string): Promise<ApiResponse<User>> {
   <div class="error-container">
     <p class="error-message">{error}</p>
     {#if onRetry}
-      <Button on:click={onRetry}>Réessayer</Button>
+      <Button on:click={onRetry}>Retry</Button>
     {/if}
   </div>
 {/if}
@@ -262,14 +262,14 @@ async function fetchUserData(userId: string): Promise<ApiResponse<User>> {
 
 ## Performance
 
-### Optimisations Svelte
+### Svelte Optimizations
 ```svelte
-<!-- ✅ Bon - Utilisation de keyed each -->
+<!-- ✅ Good - Using keyed each -->
 {#each items as item (item.id)}
   <ItemCard {item} />
 {/each}
 
-<!-- ✅ Bon - Lazy loading des composants -->
+<!-- ✅ Good - Lazy loading components -->
 <script>
   import { lazy } from 'svelte';
   const HeavyComponent = lazy(() => import('./HeavyComponent.svelte'));
@@ -280,25 +280,25 @@ async function fetchUserData(userId: string): Promise<ApiResponse<User>> {
 {/if}
 ```
 
-### Mémoisation
+### Memoization
 ```typescript
-// ✅ Bon - Utilisation de $derived pour la mémoisation
+// ✅ Good - Using $derived for memoization
 let items = $state([]);
 let filteredItems = $derived(
   items.filter(item => item.isActive)
 );
 
-// ✅ Bon - Fonctions pures pour les calculs complexes
+// ✅ Good - Pure functions for complex calculations
 function calculateTotal(items: Item[]): number {
   return items.reduce((sum, item) => sum + item.price, 0);
 }
 ```
 
-## Tests et qualité
+## Testing and Quality
 
-### Structure des tests
+### Test Structure
 ```typescript
-// ✅ Bon - Tests unitaires avec vitest
+// ✅ Good - Unit tests with vitest
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import UserCard from './UserCard.svelte';
@@ -313,9 +313,9 @@ describe('UserCard', () => {
 });
 ```
 
-### Validation des données
+### Data Validation
 ```typescript
-// ✅ Bon - Validation avec Zod
+// ✅ Good - Validation with Zod
 import { z } from 'zod';
 
 const UserSchema = z.object({
@@ -332,16 +332,16 @@ function validateUser(data: unknown): User {
 
 ## Documentation
 
-### Commentaires de code
+### Code Comments
 ```typescript
 /**
- * Calcule le score de similarité entre deux utilisateurs
- * @param user1 - Premier utilisateur
- * @param user2 - Deuxième utilisateur
- * @returns Score entre 0 et 1, où 1 = identique
+ * Calculates similarity score between two users
+ * @param user1 - First user
+ * @param user2 - Second user
+ * @returns Score between 0 and 1, where 1 = identical
  */
 function calculateUserSimilarity(user1: User, user2: User): number {
-  // Algorithme de similarité basé sur les préférences communes
+  // Similarity algorithm based on common preferences
   const commonPreferences = user1.preferences.filter(p => 
     user2.preferences.includes(p)
   );
@@ -353,18 +353,18 @@ function calculateUserSimilarity(user1: User, user2: User): number {
 }
 ```
 
-### Documentation des composants
+### Component Documentation
 ```svelte
 <!--
-  UserCard - Composant d'affichage d'un utilisateur
+  UserCard - User display component
   
   Props:
-  - user: User - Données de l'utilisateur
-  - showEmail: boolean - Afficher l'email (défaut: false)
-  - onSelect: (user: User) => void - Callback lors de la sélection
+  - user: User - User data
+  - showEmail: boolean - Show email (default: false)
+  - onSelect: (user: User) => void - Selection callback
   
   Events:
-  - select: User - Émis lors de la sélection de l'utilisateur
+  - select: User - Emitted when user is selected
 -->
 <script lang="ts">
   let { user, showEmail = false } = $props<{
@@ -374,16 +374,16 @@ function calculateUserSimilarity(user1: User, user2: User): number {
 </script>
 ```
 
-## Sécurité
+## Security
 
-### Validation des entrées
+### Input Validation
 ```typescript
-// ✅ Bon - Validation côté client ET serveur
+// ✅ Good - Client AND server-side validation
 function sanitizeInput(input: string): string {
   return input.trim().replace(/[<>]/g, '');
 }
 
-// ✅ Bon - Validation des props
+// ✅ Good - Props validation
 function validateProps(props: unknown): ButtonProps {
   if (!props || typeof props !== 'object') {
     throw new Error('Invalid props');
@@ -399,37 +399,37 @@ function validateProps(props: unknown): ButtonProps {
 }
 ```
 
-### Protection XSS
+### XSS Protection
 ```svelte
-<!-- ✅ Bon - Échappement automatique de Svelte -->
+<!-- ✅ Good - Automatic Svelte escaping -->
 <p>{userInput}</p>
 
-<!-- ❌ Éviter - @html sans validation -->
+<!-- ❌ Avoid - @html without validation -->
 <p>{@html userInput}</p>
 ```
 
-## Git et collaboration
+## Git and Collaboration
 
-### Messages de commit
+### Commit Messages
 ```
-feat: ajouter la fonctionnalité de recherche de notes
-fix: corriger le bug d'affichage sur mobile
-docs: mettre à jour la documentation API
-refactor: simplifier la logique de validation
-test: ajouter des tests pour UserCard
-style: améliorer l'apparence du bouton de connexion
+feat: add note search functionality
+fix: fix mobile display bug
+docs: update API documentation
+refactor: simplify validation logic
+test: add tests for UserCard
+style: improve login button appearance
 ```
 
 ### Branches
-- `main` - Code de production
-- `develop` - Branche de développement
-- `feature/feature-name` - Nouvelles fonctionnalités
-- `fix/bug-description` - Corrections de bugs
-- `hotfix/urgent-fix` - Corrections urgentes
+- `main` - Production code
+- `develop` - Development branch
+- `feature/feature-name` - New features
+- `fix/bug-description` - Bug fixes
+- `hotfix/urgent-fix` - Urgent fixes
 
-## Outils et automation
+## Tools and Automation
 
-### Scripts npm
+### NPM Scripts
 ```json
 {
   "scripts": {
@@ -445,8 +445,8 @@ style: améliorer l'apparence du bouton de connexion
 }
 ```
 
-### Configuration des outils
-- **Prettier** : Formatage automatique du code
-- **ESLint** : Linting et détection d'erreurs
-- **Svelte Check** : Vérification de types Svelte
-- **Husky** : Hooks Git pour la qualité du code
+### Tool Configuration
+- **Prettier** : Automatic code formatting
+- **ESLint** : Linting and error detection
+- **Svelte Check** : Svelte type checking
+- **Husky** : Git hooks for code quality

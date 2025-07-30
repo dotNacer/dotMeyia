@@ -1,176 +1,176 @@
-# Stack Technique - DotMeyia
+# Technical Stack - DotMeyia
 
-## Vue d'ensemble de l'architecture
+## Architecture Overview
 
-DotMeyia utilise une architecture moderne full-stack basée sur SvelteKit avec une approche JAMstack, intégrant des technologies de pointe pour offrir une expérience utilisateur optimale et des performances élevées.
+DotMeyia uses a modern full-stack architecture based on SvelteKit with a JAMstack approach, integrating cutting-edge technologies to deliver optimal user experience and high performance.
 
 ## Frontend
 
-### Framework principal
-- **SvelteKit 2.16+** : Framework full-stack moderne avec rendu côté serveur (SSR)
-- **Svelte 5.0+** : Framework réactif avec la nouvelle syntaxe runes (`$state`, `$derived`, `$props`)
-- **TypeScript 5.0+** : Typage statique pour la sécurité du code et une meilleure DX
+### Core Framework
+- **SvelteKit 2.16+** : Modern full-stack framework with server-side rendering (SSR)
+- **Svelte 5.0+** : Reactive framework with new runes syntax (`$state`, `$derived`, `$props`)
+- **TypeScript 5.0+** : Static typing for code safety and better DX
 
-### Build tools et bundler
-- **Vite 6.2+** : Bundler ultra-rapide avec HMR (Hot Module Replacement)
-- **PostCSS** : Post-processeur CSS avec autoprefixer
-- **Tailwind CSS 3.4+** : Framework CSS utility-first pour un styling rapide et cohérent
+### Build Tools and Bundler
+- **Vite 6.2+** : Ultra-fast bundler with HMR (Hot Module Replacement)
+- **PostCSS** : CSS post-processor with autoprefixer
+- **Tailwind CSS 3.4+** : Utility-first CSS framework for rapid and consistent styling
 
-### Styling et UI
-- **Tailwind CSS** : Framework CSS utility-first
-  - `tailwindcss-animate` : Animations CSS prêtes à l'emploi
-  - `tailwind-merge` : Fusion intelligente des classes Tailwind
-  - `tailwind-variants` : Création de variants de composants
-- **Bits UI** : Composants UI headless pour Svelte
-- **clsx** : Utilitaire pour gérer les classes CSS conditionnelles
+### Styling and UI
+- **Tailwind CSS** : Utility-first CSS framework
+  - `tailwindcss-animate` : Ready-to-use CSS animations
+  - `tailwind-merge` : Intelligent Tailwind class merging
+  - `tailwind-variants` : Component variant creation
+- **Bits UI** : Headless UI components for Svelte
+- **clsx** : Utility for managing conditional CSS classes
 
-### Animations et interactions
-- **GSAP 3.13+** : Bibliothèque d'animations avancées
-- **Svelte Transitions** : Animations natives Svelte (`fly`, `flip`, etc.)
-- **Svelte Sonner** : Notifications toast modernes
+### Animations and Interactions
+- **GSAP 3.13+** : Advanced animation library
+- **Svelte Transitions** : Native Svelte animations (`fly`, `flip`, etc.)
+- **Svelte Sonner** : Modern toast notifications
 
-### Icônes
-- **Lucide Svelte 0.488+** : Icônes SVG modernes et cohérentes
-- **@lucide/svelte** : Version officielle pour Svelte
+### Icons
+- **Lucide Svelte 0.488+** : Modern and consistent SVG icons
+- **@lucide/svelte** : Official Svelte version
 
-## Backend et API
+## Backend and API
 
-### Framework backend
-- **SvelteKit API Routes** : API REST intégrée au framework
-- **Hooks Server** : Middleware pour l'authentification et la gestion des sessions
+### Backend Framework
+- **SvelteKit API Routes** : Integrated REST API
+- **Server Hooks** : Middleware for authentication and session management
 
-### Base de données
-- **PostgreSQL** : Base de données relationnelle robuste
-- **Prisma 6.6+** : ORM moderne avec type safety
-  - `@prisma/client` : Client généré automatiquement
-  - Migrations automatiques
+### Database
+- **PostgreSQL** : Robust relational database
+- **Prisma 6.6+** : Modern ORM with type safety
+  - `@prisma/client` : Auto-generated client
+  - Automatic migrations
   - Schema-first development
 
-### Authentification
-- **Better Auth 1.2+** : Solution d'authentification moderne
-  - Support multi-providers (OAuth, credentials)
-  - Gestion des sessions sécurisées
-  - Protection CSRF intégrée
+### Authentication
+- **Better Auth 1.2+** : Modern authentication solution
+  - Multi-provider support (OAuth, credentials)
+  - Secure session management
+  - Built-in CSRF protection
 
-## Intelligence Artificielle
+## Artificial Intelligence
 
-### SDK et intégrations
-- **Google AI SDK 1.2+** : Intégration officielle avec les modèles Google AI
-- **AI SDK 4.3+** : Framework pour les applications IA
-- **@ai-sdk/svelte 2.1+** : Composants Svelte pour l'IA
+### SDK and Integrations
+- **Google AI SDK 1.2+** : Official integration with Google AI models
+- **AI SDK 4.3+** : Framework for AI applications
+- **@ai-sdk/svelte 2.1+** : Svelte components for AI
 
-### Utilitaires IA
-- **Marked 15.0+** : Parser Markdown pour le rendu de contenu IA
-- **Crypto 1.0+** : Utilitaires de cryptographie pour la sécurité
+### AI Utilities
+- **Marked 15.0+** : Markdown parser for AI content rendering
+- **Crypto 1.0+** : Cryptography utilities for security
 
-## Outils de développement
+## Development Tools
 
-### Linting et formatting
-- **ESLint 9.18+** : Linter JavaScript/TypeScript
-  - `@eslint/js` : Configuration JavaScript moderne
-  - `eslint-plugin-svelte` : Règles spécifiques à Svelte
-  - `typescript-eslint` : Support TypeScript avancé
-- **Prettier 3.4+** : Formateur de code
-  - `prettier-plugin-svelte` : Support Svelte
-  - `prettier-plugin-tailwindcss` : Tri automatique des classes Tailwind
+### Linting and Formatting
+- **ESLint 9.18+** : JavaScript/TypeScript linter
+  - `@eslint/js` : Modern JavaScript configuration
+  - `eslint-plugin-svelte` : Svelte-specific rules
+  - `typescript-eslint` : Advanced TypeScript support
+- **Prettier 3.4+** : Code formatter
+  - `prettier-plugin-svelte` : Svelte support
+  - `prettier-plugin-tailwindcss` : Automatic Tailwind class sorting
 
-### Type checking
-- **Svelte Check 4.0+** : Vérification de types pour Svelte
-- **TypeScript** : Compilateur et vérificateur de types
+### Type Checking
+- **Svelte Check 4.0+** : Type checking for Svelte
+- **TypeScript** : Compiler and type checker
 
-### Mode développement
-- **Mode Watcher 1.0+** : Surveillance des changements de mode (dark/light)
+### Development Mode
+- **Mode Watcher 1.0+** : Mode change monitoring (dark/light)
 
-## Gestion des dépendances
+## Dependency Management
 
-### Package managers
-- **npm** : Gestionnaire de paquets principal
-- **Bun** : Alternative rapide (lock file présent)
+### Package Managers
+- **npm** : Primary package manager
+- **Bun** : Fast alternative (lock file present)
 
 ### Configuration
-- **components.json** : Configuration pour les composants UI
-- **.npmrc** : Configuration npm
-- **nixpacks.toml** : Configuration de déploiement
+- **components.json** : UI components configuration
+- **.npmrc** : npm configuration
+- **nixpacks.toml** : Deployment configuration
 
-## Structure des dossiers
+## Folder Structure
 
 ```
 src/
 ├── lib/
-│   ├── components/     # Composants réutilisables
-│   │   ├── ui/        # Composants UI de base
-│   │   ├── auth/      # Composants d'authentification
-│   │   ├── dashboard/ # Composants du tableau de bord
+│   ├── components/     # Reusable components
+│   │   ├── ui/        # Base UI components
+│   │   ├── auth/      # Authentication components
+│   │   ├── dashboard/ # Dashboard components
 │   │   └── ...
-│   ├── stores/        # Stores Svelte pour l'état global
-│   ├── server/        # Code côté serveur
-│   └── utils.ts       # Utilitaires partagés
-├── routes/            # Routes SvelteKit
-│   ├── (app)/         # Routes protégées
-│   ├── (auth)/        # Routes d'authentification
-│   └── api/           # Routes API
-└── app.html           # Template HTML principal
+│   ├── stores/        # Svelte stores for global state
+│   ├── server/        # Server-side code
+│   └── utils.ts       # Shared utilities
+├── routes/            # SvelteKit routes
+│   ├── (app)/         # Protected routes
+│   ├── (auth)/        # Authentication routes
+│   └── api/           # API routes
+└── app.html           # Main HTML template
 ```
 
-## Configuration des outils
+## Tool Configuration
 
 ### Tailwind CSS
-- Configuration personnalisée avec thème étendu
-- Support des animations et transitions
-- Mode sombre/clair intégré
+- Custom configuration with extended theme
+- Animation and transition support
+- Integrated dark/light mode
 
 ### Prisma
-- Schema avec relations complexes
-- Migrations automatiques
-- Client généré avec types TypeScript
+- Schema with complex relationships
+- Automatic migrations
+- TypeScript-generated client
 
 ### Vite
-- Configuration optimisée pour SvelteKit
-- HMR rapide
-- Build optimisé pour la production
+- Optimized configuration for SvelteKit
+- Fast HMR
+- Production-optimized build
 
-## Bonnes pratiques techniques
+## Technical Best Practices
 
 ### Performance
-- **Code splitting** automatique avec SvelteKit
-- **Lazy loading** des composants
-- **Optimisation des images** et assets
-- **Bundle analysis** pour optimiser la taille
+- **Code splitting** automatic with SvelteKit
+- **Lazy loading** of components
+- **Image and asset optimization**
+- **Bundle analysis** for size optimization
 
-### Sécurité
-- **Authentification** robuste avec better-auth
-- **Protection CSRF** intégrée
-- **Validation** des données côté serveur
-- **Gestion sécurisée** des clés API
+### Security
+- **Robust authentication** with better-auth
+- **Built-in CSRF protection**
+- **Server-side data validation**
+- **Secure API key management**
 
-### Développement
-- **Type safety** avec TypeScript
-- **Linting** strict avec ESLint
-- **Formatting** automatique avec Prettier
-- **Tests** automatisés (à implémenter)
+### Development
+- **Type safety** with TypeScript
+- **Strict linting** with ESLint
+- **Automatic formatting** with Prettier
+- **Automated testing** (to be implemented)
 
-## Déploiement
+## Deployment
 
-### Environnements
-- **Développement** : Serveur local avec Vite
-- **Production** : Adapter auto-détecté avec SvelteKit
-- **Preview** : Build de prévisualisation
+### Environments
+- **Development** : Local server with Vite
+- **Production** : Auto-detected adapter with SvelteKit
+- **Preview** : Preview build
 
 ### Configuration
-- **Variables d'environnement** pour les secrets
-- **Base de données** PostgreSQL en production
-- **CDN** pour les assets statiques
+- **Environment variables** for secrets
+- **PostgreSQL database** in production
+- **CDN** for static assets
 
-## Évolutivité
+## Scalability
 
-### Scalabilité
-- **Architecture modulaire** avec SvelteKit
-- **API REST** extensible
-- **Base de données** relationnelle robuste
-- **Cache** et optimisation des performances
+### Scalability
+- **Modular architecture** with SvelteKit
+- **Extensible REST API**
+- **Robust relational database**
+- **Performance optimization and caching**
 
 ### Maintenance
-- **Dépendances** à jour avec npm audit
-- **Monitoring** des performances
-- **Logs** structurés
-- **Backup** automatique de la base de données
+- **Dependencies** up to date with npm audit
+- **Performance monitoring**
+- **Structured logging**
+- **Automatic database backup**

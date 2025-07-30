@@ -1,117 +1,117 @@
 # Product Requirements Document (PRD) - DotMeyia
 
-## Vue d'ensemble du produit
+## Product Overview
 
-**Nom du produit :** DotMeyia  
-**Version :** 0.0.1  
-**Type :** Application web de gestion de notes avec IA
+**Product Name:** DotMeyia  
+**Version:** 0.0.1  
+**Type:** AI-powered note management web application
 
-## Objectif du produit
+## Product Objective
 
-DotMeyia est une application web moderne de gestion de notes intelligente qui permet aux utilisateurs de créer, organiser et enrichir leurs notes grâce à l'intégration d'IA. L'application combine une interface utilisateur intuitive avec des capacités d'IA pour améliorer la productivité et l'organisation des informations.
+DotMeyia is a modern, intelligent note management web application that enables users to create, organize, and enhance their notes through AI integration. The application combines an intuitive user interface with AI capabilities to improve productivity and information organization.
 
-## Problème à résoudre
+## Problem Statement
 
-- **Organisation complexe :** Les utilisateurs ont besoin d'un système flexible pour organiser leurs notes par contextes et catégories
-- **Enrichissement de contenu :** Manque d'outils pour enrichir automatiquement les notes avec des informations pertinentes
-- **Interface moderne :** Besoin d'une interface utilisateur moderne et responsive pour une expérience fluide
-- **Collaboration avec l'IA :** Intégration d'IA pour assister dans la création et l'organisation de contenu
+- **Complex Organization:** Users need a flexible system to organize their notes by contexts and categories
+- **Content Enhancement:** Lack of tools to automatically enrich notes with relevant information
+- **Modern Interface:** Need for a modern and responsive user interface for a smooth experience
+- **AI Collaboration:** Integration of AI to assist in content creation and organization
 
-## Fonctionnalités principales
+## Core Features
 
-### 1. Gestion des utilisateurs
-- **Authentification :** Système d'authentification sécurisé avec better-auth
-- **Profils utilisateurs :** Gestion des profils avec avatars et informations personnelles
-- **Sessions :** Gestion des sessions utilisateur avec sécurité
+### 1. User Management
+- **Authentication:** Secure authentication system with better-auth
+- **User Profiles:** Profile management with avatars and personal information
+- **Sessions:** User session management with security
 
-### 2. Gestion des notes
-- **Création de notes :** Interface intuitive pour créer des notes avec titre et contenu
-- **Édition en temps réel :** Édition fluide avec sauvegarde automatique
-- **Organisation :** Système de catégories avec poids pour l'IA
-- **Recherche :** Fonctionnalité de recherche dans les notes
-- **Affichage en grille :** Interface responsive avec cartes de notes
+### 2. Note Management
+- **Note Creation:** Intuitive interface to create notes with title and content
+- **Real-time Editing:** Smooth editing with automatic saving
+- **Organization:** Category system with weights for AI
+- **Search:** Note search functionality
+- **Grid Display:** Responsive interface with note cards
 
-### 3. Contextes IA
-- **Création de contextes :** Définition de prompts IA pour enrichir les notes
-- **Association notes-contextes :** Liaison flexible entre notes et contextes IA
-- **Gestion des prompts :** Interface pour créer et modifier des prompts IA
+### 3. AI Contexts
+- **Context Creation:** Definition of AI prompts to enrich notes
+- **Note-Context Association:** Flexible linking between notes and AI contexts
+- **Prompt Management:** Interface to create and modify AI prompts
 
-### 4. Intégration IA
-- **Google AI SDK :** Intégration avec les modèles Google AI
-- **Enrichissement automatique :** Utilisation de l'IA pour enrichir le contenu des notes
-- **API Keys :** Gestion sécurisée des clés API pour l'IA
+### 4. AI Integration
+- **Google AI SDK:** Integration with Google AI models
+- **Automatic Enhancement:** Using AI to enrich note content
+- **API Keys:** Secure management of AI API keys
 
-### 5. Interface utilisateur
-- **Design moderne :** Interface basée sur Tailwind CSS avec animations
-- **Responsive :** Adaptation mobile et desktop
-- **Animations fluides :** Transitions et animations GSAP
-- **Thème sombre/clair :** Support des modes d'affichage
+### 5. User Interface
+- **Modern Design:** Interface based on Tailwind CSS with animations
+- **Responsive:** Mobile and desktop adaptation
+- **Smooth Animations:** GSAP transitions and animations
+- **Dark/Light Theme:** Display mode support
 
-## Architecture technique
+## Technical Architecture
 
 ### Frontend
-- **Framework :** SvelteKit 2.16+ avec Svelte 5
-- **Styling :** Tailwind CSS avec composants UI personnalisés
-- **Animations :** GSAP et animations Svelte natives
-- **État :** Stores Svelte pour la gestion d'état
+- **Framework:** SvelteKit 2.16+ with Svelte 5
+- **Styling:** Tailwind CSS with custom UI components
+- **Animations:** GSAP and native Svelte animations
+- **State Management:** Svelte stores for state management
 
 ### Backend
-- **Base de données :** PostgreSQL avec Prisma ORM
-- **Authentification :** Better-auth pour la gestion des sessions
-- **API :** Routes API SvelteKit
-- **IA :** Intégration Google AI SDK
+- **Database:** PostgreSQL with Prisma ORM
+- **Authentication:** Better-auth for session management
+- **API:** SvelteKit API routes
+- **AI:** Google AI SDK integration
 
-## Métriques de succès
+## Success Metrics
 
-### Métriques techniques
-- **Performance :** Temps de chargement < 2 secondes
-- **Disponibilité :** 99.9% de disponibilité
-- **Sécurité :** Authentification sécurisée et protection des données
+### Technical Metrics
+- **Performance:** Loading time < 2 seconds
+- **Availability:** 99.9% uptime
+- **Security:** Secure authentication and data protection
 
-### Métriques utilisateur
-- **Engagement :** Temps moyen par session > 10 minutes
-- **Rétention :** 70% des utilisateurs actifs après 30 jours
-- **Satisfaction :** Score de satisfaction utilisateur > 4.5/5
+### User Metrics
+- **Engagement:** Average session time > 10 minutes
+- **Retention:** 70% active users after 30 days
+- **Satisfaction:** User satisfaction score > 4.5/5
 
 ## Roadmap
 
-### Phase 1 (Actuelle)
-- ✅ Authentification utilisateur
-- ✅ CRUD des notes
-- ✅ CRUD des contextes
-- ✅ Interface de base
+### Phase 1 (Current)
+- ✅ User authentication
+- ✅ Notes CRUD
+- ✅ Contexts CRUD
+- ✅ Basic interface
 
-### Phase 2 (Prochaine)
-- 🔄 Intégration IA complète
-- 🔄 Système de catégories avancé
-- 🔄 Recherche et filtres
-- 🔄 Export/import de données
+### Phase 2 (Next)
+- 🔄 Complete AI integration
+- 🔄 Advanced category system
+- 🔄 Search and filters
+- 🔄 Data export/import
 
 ### Phase 3 (Future)
-- 📋 Collaboration multi-utilisateurs
-- 📋 API publique
-- 📋 Intégrations tierces
-- 📋 Analytics avancés
+- 📋 Multi-user collaboration
+- 📋 Public API
+- 📋 Third-party integrations
+- 📋 Advanced analytics
 
-## Contraintes et considérations
+## Constraints and Considerations
 
-### Techniques
-- **Compatibilité navigateur :** Support des navigateurs modernes
-- **Performance :** Optimisation pour les appareils mobiles
-- **Sécurité :** Protection des données utilisateur et des clés API
+### Technical
+- **Browser Compatibility:** Support for modern browsers
+- **Performance:** Optimization for mobile devices
+- **Security:** User data and API key protection
 
 ### Business
-- **Coût IA :** Gestion des coûts d'utilisation des API IA
-- **Scalabilité :** Architecture évolutive pour la croissance
-- **Conformité :** Respect des réglementations sur les données
+- **AI Costs:** Management of AI API usage costs
+- **Scalability:** Evolutive architecture for growth
+- **Compliance:** Data regulation compliance
 
-## Définition de "Terminé"
+## Definition of Done
 
-Une fonctionnalité est considérée comme terminée quand :
-- ✅ Code implémenté et testé
-- ✅ Interface utilisateur responsive
-- ✅ Gestion d'erreurs appropriée
-- ✅ Documentation mise à jour
-- ✅ Tests automatisés en place
-- ✅ Code review validée
-- ✅ Déploiement en production réussi
+A feature is considered complete when:
+- ✅ Code implemented and tested
+- ✅ Responsive user interface
+- ✅ Appropriate error handling
+- ✅ Documentation updated
+- ✅ Automated tests in place
+- ✅ Code review approved
+- ✅ Successful production deployment
