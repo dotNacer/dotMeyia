@@ -87,13 +87,13 @@
 				}
 			} else {
 				const error = await response.json();
-				toast.error(error.error || 'Erreur lors de l\'envoi du message');
+				toast.error(error.error || "Erreur lors de l'envoi du message");
 				// Restaurer le message dans l'input
 				messageInput = messageContent;
 			}
 		} catch (error) {
 			console.error('Error sending message:', error);
-			toast.error('Erreur lors de l\'envoi du message');
+			toast.error("Erreur lors de l'envoi du message");
 			messageInput = messageContent;
 		} finally {
 			sending = false;
@@ -105,8 +105,6 @@
 			messagesContainer.scrollTop = messagesContainer.scrollHeight;
 		}
 	}
-
-
 
 	function formatTime(dateString: string) {
 		return new Date(dateString).toLocaleTimeString('fr-FR', {
@@ -131,12 +129,12 @@
 	<title>{chat?.title || 'Chat'} - DotMeYIA</title>
 </svelte:head>
 
-<div class="flex flex-col h-screen">
+<div class="flex h-screen flex-col">
 	<!-- Header -->
 	<div class="border-b bg-white dark:bg-gray-900">
 		<div class="flex items-center gap-4 p-4">
-			<Button variant="ghost" size="sm" on:click={goBack} class="flex items-center gap-2">
-				<ArrowLeft class="w-4 h-4" />
+			<Button variant="ghost" size="sm" onclick={goBack} class="flex items-center gap-2">
+				<ArrowLeft class="h-4 w-4" />
 				Retour
 			</Button>
 			<div class="flex-1">
@@ -155,18 +153,15 @@
 	<!-- Messages -->
 	<div class="flex-1 overflow-hidden">
 		{#if loading}
-			<div class="flex items-center justify-center h-full">
-				<Loader2 class="w-8 h-8 animate-spin text-blue-600" />
+			<div class="flex h-full items-center justify-center">
+				<Loader2 class="h-8 w-8 animate-spin text-blue-600" />
 			</div>
 		{:else if chat}
-			<div 
-				bind:this={messagesContainer}
-				class="h-full overflow-y-auto p-4 space-y-4"
-			>
+			<div bind:this={messagesContainer} class="h-full space-y-4 overflow-y-auto p-4">
 				{#if chat.messages.length === 0}
-					<div class="text-center py-12">
-						<Bot class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-						<h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+					<div class="py-12 text-center">
+						<Bot class="mx-auto mb-4 h-16 w-16 text-gray-400" />
+						<h3 class="mb-2 text-lg font-medium text-gray-900 dark:text-white">
 							Commencez la conversation
 						</h3>
 						<p class="text-gray-600 dark:text-gray-400">
@@ -181,27 +176,35 @@
 					{#each chat.messages as message}
 						<div class="flex gap-3 {message.role === 'USER' ? 'justify-end' : 'justify-start'}">
 							{#if message.role === 'ASSISTANT'}
-								<div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-									<Bot class="w-4 h-4 text-white" />
+								<div
+									class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600"
+								>
+									<Bot class="h-4 w-4 text-white" />
 								</div>
 							{/if}
-							
-							<Card class="max-w-[80%] {message.role === 'USER' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-800'}">
+
+							<Card
+								class="max-w-[80%] {message.role === 'USER'
+									? 'bg-blue-600 text-white'
+									: 'bg-gray-100 dark:bg-gray-800'}"
+							>
 								<CardContent class="p-3">
 									{#if message.role === 'ASSISTANT'}
 										<Markdown content={message.content} />
 									{:else}
-										<p class="text-sm whitespace-pre-wrap">{message.content}</p>
+										<p class="whitespace-pre-wrap text-sm">{message.content}</p>
 									{/if}
-									<p class="text-xs opacity-70 mt-2">
+									<p class="mt-2 text-xs opacity-70">
 										{formatTime(message.createdAt)}
 									</p>
 								</CardContent>
 							</Card>
 
 							{#if message.role === 'USER'}
-								<div class="flex-shrink-0 w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-									<User class="w-4 h-4 text-white" />
+								<div
+									class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-600"
+								>
+									<User class="h-4 w-4 text-white" />
 								</div>
 							{/if}
 						</div>
@@ -209,14 +212,16 @@
 				{/if}
 
 				{#if sending}
-					<div class="flex gap-3 justify-start">
-						<div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-							<Bot class="w-4 h-4 text-white" />
+					<div class="flex justify-start gap-3">
+						<div
+							class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600"
+						>
+							<Bot class="h-4 w-4 text-white" />
 						</div>
 						<Card class="bg-gray-100 dark:bg-gray-800">
 							<CardContent class="p-3">
 								<div class="flex items-center gap-2">
-									<Loader2 class="w-4 h-4 animate-spin" />
+									<Loader2 class="h-4 w-4 animate-spin" />
 									<span class="text-sm">L'IA réfléchit...</span>
 								</div>
 							</CardContent>
@@ -228,24 +233,20 @@
 	</div>
 
 	<!-- Input -->
-	<div class="border-t bg-white dark:bg-gray-900 p-4">
+	<div class="border-t bg-white p-4 dark:bg-gray-900">
 		<div class="flex gap-3">
 			<Input
 				bind:value={messageInput}
 				placeholder="Tapez votre message..."
-				on:keypress={handleKeyPress}
+				onkeypress={handleKeyPress}
 				disabled={sending}
 				class="flex-1"
 			/>
-			<Button 
-				on:click={sendMessage} 
-				disabled={!messageInput.trim() || sending}
-				size="icon"
-			>
+			<Button onclick={sendMessage} disabled={!messageInput.trim() || sending} size="icon">
 				{#if sending}
-					<Loader2 class="w-4 h-4 animate-spin" />
+					<Loader2 class="h-4 w-4 animate-spin" />
 				{:else}
-					<Send class="w-4 h-4" />
+					<Send class="h-4 w-4" />
 				{/if}
 			</Button>
 		</div>

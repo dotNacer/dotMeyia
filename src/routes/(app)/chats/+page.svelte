@@ -80,44 +80,44 @@
 	<title>Chats - DotMeYIA</title>
 </svelte:head>
 
-<div class="container mx-auto p-6 max-w-4xl">
-	<div class="flex items-center justify-between mb-8">
+<div class="container mx-auto max-w-4xl p-6">
+	<div class="mb-8 flex items-center justify-between">
 		<div>
 			<h1 class="text-3xl font-bold text-gray-900 dark:text-white">Mes Chats</h1>
-			<p class="text-gray-600 dark:text-gray-400 mt-2">
+			<p class="mt-2 text-gray-600 dark:text-gray-400">
 				Discutez avec l'IA en utilisant vos contextes personnalisés
 			</p>
 		</div>
-		<Button on:click={createNewChat} class="flex items-center gap-2">
-			<Plus class="w-4 h-4" />
+		<Button onclick={createNewChat} class="flex items-center gap-2">
+			<Plus class="h-4 w-4" />
 			Nouveau Chat
 		</Button>
 	</div>
 
 	{#if loading}
-		<div class="flex justify-center items-center h-64">
-			<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+		<div class="flex h-64 items-center justify-center">
+			<div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
 		</div>
 	{:else if chats.length === 0}
-		<div class="text-center py-12">
-			<MessageSquare class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-			<h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+		<div class="py-12 text-center">
+			<MessageSquare class="mx-auto mb-4 h-16 w-16 text-gray-400" />
+			<h3 class="mb-2 text-lg font-medium text-gray-900 dark:text-white">
 				Aucun chat pour le moment
 			</h3>
-			<p class="text-gray-600 dark:text-gray-400 mb-6">
+			<p class="mb-6 text-gray-600 dark:text-gray-400">
 				Commencez votre première conversation avec l'IA
 			</p>
-			<Button on:click={createNewChat} class="flex items-center gap-2">
-				<Plus class="w-4 h-4" />
+			<Button onclick={createNewChat} class="flex items-center gap-2">
+				<Plus class="h-4 w-4" />
 				Créez votre premier chat
 			</Button>
 		</div>
 	{:else}
 		<div class="grid gap-4">
 			{#each chats as chat}
-				<Card 
-					class="cursor-pointer hover:shadow-md transition-shadow"
-					on:click={() => openChat(chat.id)}
+				<Card
+					class="cursor-pointer transition-shadow hover:shadow-md"
+					onclick={() => openChat(chat.id)}
 				>
 					<CardHeader class="pb-3">
 						<div class="flex items-start justify-between">
@@ -126,24 +126,26 @@
 									{chat.title}
 								</CardTitle>
 								{#if chat.context}
-									<div class="flex items-center gap-2 mt-1">
-										<span class="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded-full">
+									<div class="mt-1 flex items-center gap-2">
+										<span
+											class="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+										>
 											{chat.context.title}
 										</span>
 									</div>
 								{/if}
 							</div>
 							<div class="flex items-center gap-2 text-sm text-gray-500">
-								<Clock class="w-4 h-4" />
+								<Clock class="h-4 w-4" />
 								{formatDate(chat.updatedAt)}
 							</div>
 						</div>
 					</CardHeader>
 					<CardContent class="pt-0">
-						<p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
+						<p class="line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
 							{getLastMessage(chat)}
 						</p>
-						<div class="flex items-center justify-between mt-3">
+						<div class="mt-3 flex items-center justify-between">
 							<span class="text-xs text-gray-500">
 								{chat._count.messages} message{chat._count.messages > 1 ? 's' : ''}
 							</span>

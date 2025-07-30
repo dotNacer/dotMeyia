@@ -1,41 +1,41 @@
-import { json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
-import { prisma } from '$lib/server/prisma';
-import { google } from '@ai-sdk/google';
-import { streamText } from 'ai';
-import { authenticatedApi } from '$lib/server/authUtils';
-import type { User } from 'better-auth';
+import { json } from '@sveltejs/kit'
+import type { RequestHandler } from './$types'
+import prisma from '$lib/server/prisma'
+import { google } from '@ai-sdk/google'
+import { streamText } from 'ai'
+import { authenticatedApi } from '$lib/server/authUtils'
+import type { User } from 'better-auth'
 
 export const POST: RequestHandler = authenticatedApi(async (event, user: User) => {
 	try {
-		const { content } = await event.request.json();
+		const { content } = await event.request.json()
 
 		if (!content) {
-			return json({ error: 'Message content is required' }, { status: 400 });
+			return json({ error: 'Message content is required' }, { status: 400 })
 		}
 
 		// Vérifier que le chat existe et appartient à l'utilisateur
 		const chat = await prisma.chat.findFirst({
 			where: {
 				id: event.params.id,
-				userId: user.id
+				userId: user.id,
 			},
 			include: {
 				context: {
 					select: {
-						prompt: true
-					}
+						prompt: true,
+					},
 				},
 				messages: {
 					orderBy: {
-						createdAt: 'asc'
-					}
-				}
-			}
-		});
+						createdAt: 'asc',
+					},
+				},
+			},
+		})
 
 		if (!chat) {
-			return json({ error: 'Chat not found' }, { status: 404 });
+			return json({ error: 'Chat not found' }, { status: 404 })
 		}
 
 		// Sauvegarder le message de l'utilisateur
@@ -43,53 +43,50 @@ export const POST: RequestHandler = authenticatedApi(async (event, user: User) =
 			data: {
 				content,
 				role: 'USER',
-				chatId: event.params.id
-			}
-		});
+				chatId: event.params.id,
+			},
+		})
 
 		// Mettre à jour la date de modification du chat
 		await prisma.chat.update({
 			where: { id: event.params.id },
-			data: { updatedAt: new Date() }
-		});
+			data: { updatedAt: new Date() },
+		})
 
 		// Préparer l'historique des messages pour l'IA
-		const messages = chat.messages.map(msg => ({
+		const messages = chat.messages.map((msg) => ({
 			role: msg.role.toLowerCase() as 'user' | 'assistant',
-			content: msg.content
-		}));
+			content: msg.content,
+		}))
 
 		// Ajouter le nouveau message
-		messages.push({ role: 'user', content });
+		messages.push({ role: 'user', content })
 
 		// Créer le système prompt avec le contexte si disponible
-		const systemPrompt = chat.context?.prompt || 'Tu es un assistant IA utile et amical.';
+		const systemPrompt = chat.context?.prompt || 'Tu es un assistant IA utile et amical.'
 
 		// Générer la réponse de l'IA
 		const result = await streamText({
 			model: google('gemini-1.5-flash'),
-			messages: [
-				{ role: 'system', content: systemPrompt },
-				...messages
-			],
-			maxTokens: 1000
-		});
+			messages: [{ role: 'system', content: systemPrompt }, ...messages],
+			maxTokens: 1000,
+		})
 
 		// Sauvegarder la réponse de l'IA
 		const assistantMessage = await prisma.chatMessage.create({
 			data: {
 				content: result.text,
 				role: 'ASSISTANT',
-				chatId: event.params.id
-			}
-		});
+				chatId: event.params.id,
+			},
+		})
 
 		return json({
 			userMessage,
-			assistantMessage
-		});
+			assistantMessage,
+		})
 	} catch (error) {
-		console.error('Error sending message:', error);
-		return json({ error: 'Internal server error' }, { status: 500 });
+		console.error('Error sending message:', error)
+		return json({ error: 'Internal server error' }, { status: 500 })
 	}
-});
+})

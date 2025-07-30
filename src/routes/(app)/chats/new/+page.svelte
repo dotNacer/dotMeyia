@@ -5,7 +5,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
-	import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '$lib/components/ui/select';
+	import * as Select from '$lib/components/ui/select';
 	import { ArrowLeft, Sparkles } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 
@@ -82,24 +82,22 @@
 	<title>Nouveau Chat - DotMeYIA</title>
 </svelte:head>
 
-<div class="container mx-auto p-6 max-w-2xl">
-	<div class="flex items-center gap-4 mb-8">
-		<Button variant="ghost" size="sm" on:click={goBack} class="flex items-center gap-2">
-			<ArrowLeft class="w-4 h-4" />
+<div class="container mx-auto max-w-2xl p-6">
+	<div class="mb-8 flex items-center gap-4">
+		<Button variant="ghost" size="sm" onclick={goBack} class="flex items-center gap-2">
+			<ArrowLeft class="h-4 w-4" />
 			Retour
 		</Button>
 		<div>
 			<h1 class="text-3xl font-bold text-gray-900 dark:text-white">Nouveau Chat</h1>
-			<p class="text-gray-600 dark:text-gray-400 mt-2">
-				Créez une nouvelle conversation avec l'IA
-			</p>
+			<p class="mt-2 text-gray-600 dark:text-gray-400">Créez une nouvelle conversation avec l'IA</p>
 		</div>
 	</div>
 
 	<Card>
 		<CardHeader>
 			<CardTitle class="flex items-center gap-2">
-				<Sparkles class="w-5 h-5" />
+				<Sparkles class="h-5 w-5" />
 				Configuration du chat
 			</CardTitle>
 		</CardHeader>
@@ -116,31 +114,34 @@
 
 			<div class="space-y-2">
 				<Label for="context">Contexte (optionnel)</Label>
-				<Select bind:value={selectedContextId}>
-					<SelectTrigger>
-						<SelectValue placeholder="Sélectionnez un contexte existant" />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="">Aucun contexte</SelectItem>
+				<Select.Root type="single" bind:value={selectedContextId}>
+					<Select.Trigger>
+						{selectedContextId
+							? contexts.find((c) => c.id === selectedContextId)?.title || 'Sélectionné'
+							: 'Sélectionnez un contexte existant'}
+					</Select.Trigger>
+					<Select.Content>
+						<Select.Item value="">Aucun contexte</Select.Item>
 						{#if contextsLoading}
-							<SelectItem value="" disabled>Chargement...</SelectItem>
+							<Select.Item value="" disabled>Chargement...</Select.Item>
 						{:else}
 							{#each contexts as context}
-								<SelectItem value={context.id}>
+								<Select.Item value={context.id}>
 									{context.title}
-								</SelectItem>
+								</Select.Item>
 							{/each}
 						{/if}
-					</SelectContent>
-				</Select>
+					</Select.Content>
+				</Select.Root>
 				{#if selectedContextId}
-					{@const selectedContext = contexts.find(c => c.id === selectedContextId)}
+					{@const selectedContext = contexts.find((c) => c.id === selectedContextId)}
 					{#if selectedContext}
-						<div class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+						<div class="mt-2 rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
 							<p class="text-sm text-blue-800 dark:text-blue-200">
-								<strong>Contexte sélectionné :</strong> {selectedContext.title}
+								<strong>Contexte sélectionné :</strong>
+								{selectedContext.title}
 							</p>
-							<p class="text-xs text-blue-600 dark:text-blue-300 mt-1 line-clamp-2">
+							<p class="mt-1 line-clamp-2 text-xs text-blue-600 dark:text-blue-300">
 								{selectedContext.prompt}
 							</p>
 						</div>
@@ -149,10 +150,8 @@
 			</div>
 
 			<div class="flex gap-3 pt-4">
-				<Button variant="outline" on:click={goBack}>
-					Annuler
-				</Button>
-				<Button on:click={createChat} disabled={loading || !title.trim()}>
+				<Button variant="outline" onclick={goBack}>Annuler</Button>
+				<Button onclick={createChat} disabled={loading || !title.trim()}>
 					{loading ? 'Création...' : 'Créer le chat'}
 				</Button>
 			</div>
