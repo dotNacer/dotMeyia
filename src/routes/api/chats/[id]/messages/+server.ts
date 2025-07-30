@@ -3,15 +3,12 @@ import type { RequestHandler } from './$types';
 import { prisma } from '$lib/server/prisma';
 import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
+import { authenticatedApi } from '$lib/server/authUtils';
+import type { User } from 'better-auth';
 
-export const POST: RequestHandler = async ({ params, request, locals }) => {
-	const session = await locals.auth();
-	if (!session?.user?.id) {
-		return json({ error: 'Unauthorized' }, { status: 401 });
-	}
-
+export const POST: RequestHandler = authenticatedApi(async (event, user: User) => {
 	try {
-		const { content } = await request.json();
+		const { content } = await event.request.json();
 
 		if (!content) {
 			return json({ error: 'Message content is required' }, { status: 400 });
@@ -20,8 +17,8 @@ export const POST: RequestHandler = async ({ params, request, locals }) => {
 		// Vérifier que le chat existe et appartient à l'utilisateur
 		const chat = await prisma.chat.findFirst({
 			where: {
-				id: params.id,
-				userId: session.user.id
+				id: event.params.id,
+				userId: user.id
 			},
 			include: {
 				context: {
@@ -46,13 +43,13 @@ export const POST: RequestHandler = async ({ params, request, locals }) => {
 			data: {
 				content,
 				role: 'USER',
-				chatId: params.id
+				chatId: event.params.id
 			}
 		});
 
 		// Mettre à jour la date de modification du chat
 		await prisma.chat.update({
-			where: { id: params.id },
+			where: { id: event.params.id },
 			data: { updatedAt: new Date() }
 		});
 
@@ -83,7 +80,7 @@ export const POST: RequestHandler = async ({ params, request, locals }) => {
 			data: {
 				content: result.text,
 				role: 'ASSISTANT',
-				chatId: params.id
+				chatId: event.params.id
 			}
 		});
 
@@ -95,4 +92,4 @@ export const POST: RequestHandler = async ({ params, request, locals }) => {
 		console.error('Error sending message:', error);
 		return json({ error: 'Internal server error' }, { status: 500 });
 	}
-};
+});

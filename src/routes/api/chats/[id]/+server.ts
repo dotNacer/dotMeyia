@@ -1,18 +1,15 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { prisma } from '$lib/server/prisma';
+import { authenticatedApi } from '$lib/server/authUtils';
+import type { User } from 'better-auth';
 
-export const GET: RequestHandler = async ({ params, locals }) => {
-	const session = await locals.auth();
-	if (!session?.user?.id) {
-		return json({ error: 'Unauthorized' }, { status: 401 });
-	}
-
+export const GET: RequestHandler = authenticatedApi(async (event, user: User) => {
 	try {
 		const chat = await prisma.chat.findFirst({
 			where: {
-				id: params.id,
-				userId: session.user.id
+				id: event.params.id,
+				userId: user.id
 			},
 			include: {
 				context: {
@@ -39,4 +36,4 @@ export const GET: RequestHandler = async ({ params, locals }) => {
 		console.error('Error fetching chat:', error);
 		return json({ error: 'Internal server error' }, { status: 500 });
 	}
-};
+});

@@ -1,18 +1,14 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { prisma } from '$lib/server/prisma';
-import { auth } from '$lib/server/auth';
+import { authenticatedApi } from '$lib/server/authUtils';
+import type { User } from 'better-auth';
 
-export const GET: RequestHandler = async ({ locals }) => {
-	const session = await locals.auth();
-	if (!session?.user?.id) {
-		return json({ error: 'Unauthorized' }, { status: 401 });
-	}
-
+export const GET: RequestHandler = authenticatedApi(async (event, user: User) => {
 	try {
 		const chats = await prisma.chat.findMany({
 			where: {
-				userId: session.user.id
+				userId: user.id
 			},
 			include: {
 				context: {
@@ -43,16 +39,11 @@ export const GET: RequestHandler = async ({ locals }) => {
 		console.error('Error fetching chats:', error);
 		return json({ error: 'Internal server error' }, { status: 500 });
 	}
-};
+});
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const session = await locals.auth();
-	if (!session?.user?.id) {
-		return json({ error: 'Unauthorized' }, { status: 401 });
-	}
-
+export const POST: RequestHandler = authenticatedApi(async (event, user: User) => {
 	try {
-		const { title, contextId } = await request.json();
+		const { title, contextId } = await event.request.json();
 
 		if (!title) {
 			return json({ error: 'Title is required' }, { status: 400 });
@@ -61,7 +52,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		const chat = await prisma.chat.create({
 			data: {
 				title,
-				userId: session.user.id,
+				userId: user.id,
 				contextId: contextId || null
 			},
 			include: {
@@ -79,4 +70,4 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		console.error('Error creating chat:', error);
 		return json({ error: 'Internal server error' }, { status: 500 });
 	}
-};
+});
