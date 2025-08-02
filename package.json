@@ -56,5 +56,10 @@
 		"gsap": "^3.13.0",
 		"lucide-svelte": "^0.488.0",
 		"marked": "^15.0.8"
+	},
+	"overrides": {
+		"vite": {
+			"rollup": "npm:@rollup/wasm-node"
+		}
 	}
 }
