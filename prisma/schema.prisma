@@ -28,6 +28,7 @@ model User {
   contexts      AIContext[]
   categories    Category[]
   apiKeys       ApiKey[]
+  chats         Chat[]
   @@unique([email])
   @@map("user")
 }
@@ -97,6 +98,7 @@ model AIContext {
   title     String 
   prompt    String
   notes     Note[]  
+  chats     Chat[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -132,4 +134,31 @@ model ApiKey {
 
   @@unique([token])
   @@map("api_key")
+}
+
+model Chat {
+  id          String    @id @default(uuid())
+  title       String
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contextId   String?
+  context     AIContext? @relation(fields: [contextId], references: [id])
+  messages    Message[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  isActive    Boolean   @default(true)
+  
+  @@map("chat")
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  role      String   // "user" | "assistant" | "system", utiliser une enum ?
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  metadata  Json?    // Pour stocker des données supplémentaires
+  
+  @@map("message")
 }

@@ -3,6 +3,8 @@
 	import FileText from '@lucide/svelte/icons/file-text';
 	import BotMessageSquare from '@lucide/svelte/icons/bot-message-square';
 	import BrainCircuit from '@lucide/svelte/icons/brain-circuit';
+
+	//TODO: Faire une version de la navbar interchangeable, ou alors trouver un moyen d'avoir les deux
 	// This is sample data.
 	const data = {
 		navMain: [
@@ -29,6 +31,11 @@
 						title: 'Test',
 						url: '/test',
 						icon: BotMessageSquare
+					},
+					{
+						title: 'Chat',
+						url: '/chat',
+						icon: MessagesSquare
 					}
 				]
 			}
@@ -43,6 +50,7 @@
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import type { ComponentProps } from 'svelte';
 	import type { User } from 'better-auth';
+	import { MessagesSquare } from 'lucide-svelte';
 	let {
 		user,
 		ref = $bindable(null),
