@@ -56,9 +56,9 @@ const createContextsStore = () => {
 				...context,
 				notes_ids: notes.map((note) => note.id),
 			})
-			if (updatedContext) {
+			if (updatedContext)
 				update((contexts) => contexts.map((c) => (c.id === id ? updatedContext : c)))
-			}
+
 			return updatedContext
 		},
 		create: async (context: ContextDTO, notes: Note[]) => {
@@ -71,9 +71,8 @@ const createContextsStore = () => {
 		},
 		delete: async (id: string) => {
 			const success = await deleteContext(id)
-			if (success) {
-				update((contexts) => contexts.filter((context) => context.id !== id))
-			}
+			if (success) update((contexts) => contexts.filter((context) => context.id !== id))
+
 			return success
 		},
 	}
