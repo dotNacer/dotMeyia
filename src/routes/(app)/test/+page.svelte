@@ -1,56 +1,56 @@
 <script lang="ts">
-	import { contexts } from '$lib/stores/contexts';
-	import { onMount } from 'svelte';
-	import { Input } from '$lib/components/ui/input';
+	import { contexts } from '$lib/stores/contexts'
+	import { onMount } from 'svelte'
+	import { Input } from '$lib/components/ui/input'
 
 	// Selectionne le contexte préféré si selectionné
-	let selectedContextId: string | null = $state(contexts.selected.get());
-	let chatStarted = $state(false);
-	let userInput = $state('');
+	let selectedContextId: string | null = $state(contexts.selected.get())
+	let chatStarted = $state(false)
+	let userInput = $state('')
 
-	import { Button } from '$lib/components/ui/button';
-	import { Chat } from '@ai-sdk/svelte';
-	import { Send } from 'lucide-svelte';
-	import ChatMessage from '$lib/components/ai/ChatMessage.svelte';
-	import { ScrollArea } from '$lib/components/ui/scroll-area';
+	import { Button } from '$lib/components/ui/button'
+	import { Chat } from '@ai-sdk/svelte'
+	import { Send } from 'lucide-svelte'
+	import ChatMessage from '$lib/components/ai/ChatMessage.svelte'
+	import { ScrollArea } from '$lib/components/ui/scroll-area'
 
-	let chat: Chat | null = $state(null);
-	let messagesContainer: HTMLDivElement;
+	let chat: Chat | null = $state(null)
+	let messagesContainer: HTMLDivElement
 
 	function startChat() {
-		if (!selectedContextId) return;
+		if (!selectedContextId) return
 
 		chat = new Chat({
 			api: '/api/ai/context',
 			body: {
-				contextId: selectedContextId
-			}
-		});
+				contextId: selectedContextId,
+			},
+		})
 
-		chatStarted = true;
+		chatStarted = true
 	}
 
 	function handleSubmit(e: SubmitEvent) {
-		e.preventDefault();
+		e.preventDefault()
 
 		if (!chatStarted && selectedContextId) {
-			startChat();
+			startChat()
 
-			if (!chat) return;
-			chat.input = userInput;
-			chat.handleSubmit(e);
-			userInput = '';
+			if (!chat) return
+			chat.input = userInput
+			chat.handleSubmit(e)
+			userInput = ''
 		} else if (chatStarted && chat) {
-			chat.handleSubmit(e);
+			chat.handleSubmit(e)
 		}
 	}
 
 	function handleInputChange(event: Event) {
-		const value = (event.target as HTMLInputElement).value;
+		const value = (event.target as HTMLInputElement).value
 		if (chatStarted && chat) {
-			chat.input = value;
+			chat.input = value
 		} else {
-			userInput = value;
+			userInput = value
 		}
 	}
 
@@ -58,14 +58,14 @@
 		if (messagesContainer && chat?.messages?.length) {
 			messagesContainer.scrollTo({
 				top: messagesContainer.scrollHeight,
-				behavior: 'smooth'
-			});
+				behavior: 'smooth',
+			})
 		}
-	});
+	})
 
 	onMount(async () => {
-		contexts.fetch();
-	});
+		contexts.fetch()
+	})
 </script>
 
 <ScrollArea class="flex flex-col gap-4">
