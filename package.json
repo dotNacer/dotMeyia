@@ -52,7 +52,7 @@
 	"dependencies": {
 		"@ai-sdk/google": "^1.2.12",
 		"@ai-sdk/svelte": "^2.1.9",
-		"@prisma/client": "^6.6.0",
+		"@prisma/client": "^6.18.0",
 		"@sveltejs/adapter-node": "^5.2.13",
 		"ai": "^4.3.9",
 		"animejs": "^4.2.2",
