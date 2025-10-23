@@ -50,12 +50,9 @@
 		{
 			label: 'Ajouter un contexte',
 			expandedContent: contextExpanded,
+			expandedTitle: 'Créer un nouveau contexte',
 		},
 	]}
 
-	<ExpandableButton title="Actions rapides" {actions}>
-		{#snippet icon()}
-			<Settings class="size-6 text-primary-foreground" />
-		{/snippet}
-	</ExpandableButton>
+	<ExpandableButton title="Actions rapides" {actions} />
 {/if}

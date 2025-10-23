@@ -1,19 +1,21 @@
 <script lang="ts">
 	import { animate, spring } from 'animejs'
 	import { innerWidth, innerHeight } from 'svelte/reactivity/window'
-	import { Plus } from 'lucide-svelte'
+	import { Plus, X, type Icon } from 'lucide-svelte'
+	import type { ComponentType } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { onClickOutside } from 'runed'
 	import type { Snippet } from 'svelte'
-
+	import { Button } from '$lib/components/ui/button'
 	// Types
 	type ButtonState = 'closed' | 'open' | { expanded: number }
 
 	export type Action = {
 		label: string
-		icon?: Snippet
+		icon?: ComponentType<Icon>
 		onClick?: () => void
 		expandedContent?: Snippet
+		expandedTitle?: string
 	}
 
 	// Props
@@ -30,6 +32,7 @@
 	let currentState = $state<ButtonState>('closed')
 	let backgroundRef: HTMLDivElement | undefined = $state()
 	let contentRef: HTMLDivElement | undefined = $state()
+	let isClosing = $state(false)
 
 	const CLOSED_WIDTH = 56
 	const CLOSED_HEIGHT = 56
@@ -152,6 +155,8 @@
 	function closeMenu() {
 		if (currentState === 'closed') return
 
+		isClosing = true
+
 		if (contentRef) {
 			animate(contentRef!, {
 				opacity: [1, 0],
@@ -173,7 +178,8 @@
 
 		setTimeout(() => {
 			currentState = 'closed'
-		}, 200)
+			isClosing = false
+		}, 300)
 	}
 
 	function toggle() {
@@ -188,6 +194,10 @@
 		if (currentState === 'closed') return
 		e.stopPropagation()
 		closeMenu()
+	}
+
+	function isOpen(state: ButtonState): boolean {
+		return state === 'open'
 	}
 </script>
 
@@ -230,10 +240,10 @@
 		class="absolute bottom-0 right-0 z-[9999] h-14 w-14 origin-bottom-right overflow-hidden rounded-[32px] bg-primary text-primary-foreground shadow-lg transition-shadow hover:shadow-xl"
 	>
 		<div class="relative flex h-full w-full items-end justify-end p-4 text-primary-foreground">
-			{#if currentState === 'closed'}
+			{#if currentState === 'closed' && !isClosing}
 				<div
 					class="flex h-full w-full flex-col items-center justify-center"
-					transition:fade={{ duration: 100 }}
+					transition:fade={{ duration: 50 }}
 				>
 					{#if iconSnippet}
 						{@render iconSnippet()}
@@ -241,30 +251,40 @@
 						<Plus class="size-6 text-primary-foreground" />
 					{/if}
 				</div>
-			{:else if currentState === 'open'}
+			{:else if isOpen(currentState) || isClosing}
 				<div
 					bind:this={contentRef}
 					class="absolute flex flex-col gap-3 text-left opacity-0"
 					style="width: {contentWidth}px; filter: blur(10px);"
 				>
-					<h3 class="m-0 text-xl font-semibold tracking-tight">{title}</h3>
+					<div class="flex justify-between gap-2">
+						<h3 class="m-0 text-2xl font-semibold tracking-tight">{title}</h3>
+						<Button
+							variant="outline"
+							size="icon"
+							class="rounded-3xl"
+							onclick={() => closeMenu()}
+						>
+							<X class="size-4" />
+						</Button>
+					</div>
 					{#each actions as action, index}
 						<button
 							type="button"
-							class="flex items-center gap-2 rounded-2xl border border-primary-foreground/20 bg-primary-foreground/5 px-4 py-2 text-left text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10 active:scale-95"
+							class="flex items-center gap-2 rounded-2xl border border-primary-foreground/20 bg-primary-foreground/5 px-4 py-2 text-left text-sm font-medium text-primary-foreground transition-[colors,transform] duration-75 hover:bg-primary-foreground/10 active:scale-[0.97]"
 							onclick={(e) => {
 								e.stopPropagation()
 								expandAction(index)
 							}}
 						>
 							{#if action.icon}
-								{@render action.icon()}
+								<action.icon class="size-4" />
 							{/if}
 							{action.label}
 						</button>
 					{/each}
 				</div>
-			{:else if isExpanded(currentState)}
+			{:else if isExpanded(currentState) || isClosing}
 				{@const expandedIndex = getExpandedIndex(currentState)}
 				{@const action = expandedIndex !== null ? actions[expandedIndex] : null}
 				<div
@@ -272,7 +292,22 @@
 					class="absolute inset-0 flex flex-col gap-4 overflow-y-auto p-6 text-left opacity-0"
 					style="filter: blur(10px);"
 				>
-					<h3 class="m-0 text-2xl font-bold tracking-tight">{title}</h3>
+					<div class="flex items-center justify-between gap-2">
+						<h3 class="m-0 flex items-center gap-2 text-2xl font-bold tracking-tight">
+							{#if action?.icon}
+								<action.icon class="size-6" />
+							{/if}
+							{action?.expandedTitle || title}
+						</h3>
+						<Button
+							variant="outline"
+							size="icon"
+							class="flex-shrink-0 rounded-3xl"
+							onclick={() => closeMenu()}
+						>
+							<X class="size-4" />
+						</Button>
+					</div>
 					{#if action?.expandedContent}
 						{@render action.expandedContent()}
 					{/if}
