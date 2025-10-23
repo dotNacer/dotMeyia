@@ -1,27 +1,21 @@
-import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { streamText } from 'ai'
-
-import { env } from '$env/dynamic/private'
+import google from '$lib/server/ai'
 import prisma from '$lib/server/prisma'
 import type { Note } from '@prisma/client'
 
-const google = createGoogleGenerativeAI({
-    apiKey: env.GOOGLE_API_KEY,
-})
-
 export async function POST({ request }) {
-    const { messages, contextId } = await request.json()
+	const { messages, contextId } = await request.json()
 
-    const context = await prisma.aIContext.findUnique({
-        where: {
-            id: contextId,
-        },
-        include: {
-            notes: true,
-        },
-    })
+	const context = await prisma.aIContext.findUnique({
+		where: {
+			id: contextId,
+		},
+		include: {
+			notes: true,
+		},
+	})
 
-    let fullPrompt = `
+	let fullPrompt = `
 
     Tu es un Assistant Agent intelligent du nom de Meÿia conçu pour aider les utilisateurs de manière efficace et personnalisée.
 
@@ -47,25 +41,21 @@ export async function POST({ request }) {
     Notes: ${context?.notes ? formatDatas(context?.notes satisfies Note[]) : 'Aucune note fournie'}
     `
 
-    //TODO: Devrais-je enlever le await ?
-    const result = await streamText({
-        model: google('gemini-2.0-flash'),
-        system: fullPrompt,
-        messages,
-    })
+	//TODO: Devrais-je enlever le await ?
+	const result = await streamText({
+		model: google('gemini-2.0-flash'),
+		system: fullPrompt,
+		messages,
+	})
 
-    return result.toDataStreamResponse()
+	return result.toDataStreamResponse()
 }
 
 function formatDatas(notes: Note[]) {
-    let result = ''
+	let result = ''
 
-    notes.forEach(
-        (note) =>
-            (result +=
-                '###### ' + note.title + ' ######\n' + note.content + '\n')
-    )
+	notes.forEach((note) => (result += '###### ' + note.title + ' ######\n' + note.content + '\n'))
 
-    // return notes.map((note) => note.content).join('\n')
-    return result
+	// return notes.map((note) => note.content).join('\n')
+	return result
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ExpandableButton, { type Action } from '../sidebar/ExpandableButton.svelte'
 	import { Plus, Zap } from 'lucide-svelte'
-
+	import { analyseFastNote } from '$lib/ai.remote'
 	function handleAddNote() {
 		console.log('add note')
 	}
@@ -21,6 +21,11 @@
 			}, 350)
 		}
 	})
+
+	async function handleAddFastNote() {
+		const fastNote = await analyseFastNote(descriptionTextareaRef?.value ?? '')
+		console.log(fastNote)
+	}
 </script>
 
 {#snippet fastNoteExpanded()}
@@ -36,7 +41,7 @@
 		<button
 			type="button"
 			class="flex items-center justify-center gap-2 rounded-2xl border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-2 text-sm font-medium text-primary-foreground transition-[colors,transform] duration-75 hover:bg-primary-foreground/20 active:scale-[0.97]"
-			onclick={handleAddNote}
+			onclick={handleAddFastNote}
 		>
 			<Plus class="size-4" />
 			Créer la note

@@ -114,3 +114,8 @@ export function unwrapOrThrow<T>(result: Result<T>): T {
 	if (result.ok) return result.data
 	throw result.error
 }
+
+//TODO: J'me suis arrêté ici
+export function extractJSON(response: string): object {
+	// Retire les code fences markdown (``````)
+}
