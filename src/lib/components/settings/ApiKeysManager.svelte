@@ -5,6 +5,7 @@
 	import { toast } from 'svelte-sonner';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
+	import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '$lib/components/ui/card';
 	import { fly } from 'svelte/transition';
 	import { scale } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
@@ -77,115 +78,117 @@
 	</div>
 
 	{#if createdApiKey}
-		<div class="rounded-md border border-green-200 bg-green-50 p-4">
-			<h3 class="font-semibold text-green-800">Clé API créée avec succès !</h3>
-			<p class="mt-1 text-sm text-green-700">
-				Cliquez pour copier votre clé API. Elle ne sera plus affichée après fermeture.
-			</p>
-			<div class="mt-2 flex items-center gap-2">
-				<Button class="flex-1" onclick={() => copyToClipboard(createdApiKey.token)}>
-					Copier la clé API
-				</Button>
-			</div>
-			<button
-				class="mt-2 text-sm text-green-600 hover:text-green-800"
-				onclick={() => (createdApiKey = null)}
-			>
-				Fermer
-			</button>
-		</div>
+		<Card>
+			<CardHeader>
+				<CardTitle>Clé API créée avec succès</CardTitle>
+				<CardDescription>
+					Cliquez pour copier votre clé API. Elle ne sera plus affichée après fermeture.
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<div class="flex items-center gap-2">
+					<Button class="flex-1" onclick={() => copyToClipboard(createdApiKey.token)}>
+						Copier la clé API
+					</Button>
+					<Button variant="link" size="sm" onclick={() => (createdApiKey = null)}>Fermer</Button>
+				</div>
+			</CardContent>
+		</Card>
 	{/if}
 
 	<!-- Formulaire de création -->
 	{#if showCreateApiKeyForm}
-		<div class="rounded-md border bg-gray-50 p-4" in:fly={{ y: -10 }}>
-			<h3 class="mb-4 font-semibold">Créer une nouvelle clé API</h3>
-			<div class="space-y-4">
-				<div>
-					<Label class="mb-1 block text-sm font-medium">Nom de la clé</Label>
-					<Input
-						type="text"
-						bind:value={newApiKeyName}
-						placeholder="Ex: Serveur MCP Production"
-						class="w-full rounded-md border p-2"
-					/>
+		<Card in:fly={{ y: -10 }}>
+			<CardHeader>
+				<CardTitle>Créer une nouvelle clé API</CardTitle>
+				<CardDescription>Définissez un nom et une date d'expiration optionnelle.</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<div class="space-y-4">
+					<div>
+						<Label class="mb-1 block text-sm font-medium">Nom de la clé</Label>
+						<Input
+							type="text"
+							bind:value={newApiKeyName}
+							placeholder="Ex: Serveur MCP Production"
+							class="w-full"
+						/>
+					</div>
+					<div>
+						<Label class="mb-1 block text-sm font-medium">Date d'expiration (optionnel)</Label>
+						<Input type="date" bind:value={newApiKeyExpiry} class="w-full" />
+					</div>
+					<div class="flex gap-2">
+						<Button onclick={createApiKey}>Créer</Button>
+						<Button variant="outline" onclick={() => (showCreateApiKeyForm = false)}>Annuler</Button>
+					</div>
 				</div>
-				<div>
-					<Label class="mb-1 block text-sm font-medium">Date d'expiration (optionnel)</Label>
-					<Input type="date" bind:value={newApiKeyExpiry} class="w-full rounded-md border p-2" />
-				</div>
-				<div class="flex gap-2">
-					<Button onclick={createApiKey}>Créer</Button>
-					<Button variant="outline" onclick={() => (showCreateApiKeyForm = false)}>Annuler</Button>
-				</div>
-			</div>
-		</div>
+			</CardContent>
+		</Card>
 	{:else}
 		<!-- Liste des clés API existantes -->
 		<div class="space-y-4" in:fly={{ y: -10 }}>
 			{#each $apiKeys as apiKey}
-				<div class="rounded-md border p-4 {apiKey.isActive ? 'bg-white' : 'bg-gray-50'}">
-					<div class="flex items-center justify-between">
-						<div class="flex-1">
-							<h3 class="font-semibold {apiKey.isActive ? 'text-gray-900' : 'text-gray-500'}">
-								{apiKey.name}
-							</h3>
-							<div class="mt-1 text-sm text-gray-600">
-								<span class="font-mono">{apiKey.token}</span>
-								{#if apiKey.token.includes('...')}
-									<span class="ml-2 text-xs text-gray-500">(Token masqué pour la sécurité)</span>
-								{:else}
-									<Button size="sm" variant="ghost" onclick={() => copyToClipboard(apiKey.token)}
-										>Copier</Button
-									>
-								{/if}
-							</div>
-							<div class="mt-2 text-xs text-gray-500">
-								Créée le {formatDate(apiKey.createdAt)} • Dernière utilisation: {formatDate(
-									apiKey.lastUsedAt
-								)} •
-								{#if apiKey.expiresAt}
-									Expire le {formatDate(apiKey.expiresAt)}
-								{:else}
-									Sans expiration
-								{/if}
-							</div>
-						</div>
-						<div class="flex items-center gap-2">
-							<Button
-								class=" text-sm {apiKey.isActive
-									? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-									: 'bg-green-100 text-green-800 hover:bg-green-200'}"
-								onclick={() => toggleApiKey(apiKey.id, apiKey.isActive)}
-							>
-								{apiKey.isActive ? 'Désactiver' : 'Activer'}
-							</Button>
-
-							<div class="flex items-center gap-1">
-								{#if deletingApiKey !== apiKey.id}
-									<div in:scale={{ duration: 200, easing: quintOut }}>
-										<Button
-											variant="destructive"
-											size="sm"
-											onclick={() => (deletingApiKey = apiKey.id)}
+				<Card class={!apiKey.isActive ? 'opacity-80' : ''}>
+					<CardContent class="p-4">
+						<div class="flex items-center justify-between">
+							<div class="flex-1">
+								<h3 class="font-semibold">{apiKey.name}</h3>
+								<div class="mt-1 text-sm text-muted-foreground">
+									<span class="font-mono">{apiKey.token}</span>
+									{#if apiKey.token.includes('...')}
+										<span class="ml-2 text-xs text-muted-foreground">(Token masqué pour la sécurité)</span>
+									{:else}
+										<Button size="sm" variant="ghost" onclick={() => copyToClipboard(apiKey.token)}
+											>Copier</Button
 										>
-											Supprimer
-										</Button>
-									</div>
-								{:else}
-									<div
-										class="flex items-center gap-1"
-										in:scale={{ duration: 200, easing: quintOut }}
-									>
-										<Button variant="destructive" size="sm" onclick={() => deleteApiKey()}>
-											Confirmer
-										</Button>
-										<Button variant="outline" size="sm" onclick={cancelDelete}>Annuler</Button>
-									</div>
-								{/if}
+									{/if}
+								</div>
+								<div class="mt-2 text-xs text-muted-foreground">
+									Créée le {formatDate(apiKey.createdAt)} • Dernière utilisation: {formatDate(
+										apiKey.lastUsedAt
+									)} •
+									{#if apiKey.expiresAt}
+										Expire le {formatDate(apiKey.expiresAt)}
+									{:else}
+										Sans expiration
+									{/if}
+								</div>
 							</div>
-						</div>
-					</div>
+							<div class="flex items-center gap-2">
+								<Button
+									variant="secondary"
+									onclick={() => toggleApiKey(apiKey.id, apiKey.isActive)}
+								>
+									{apiKey.isActive ? 'Désactiver' : 'Activer'}
+								</Button>
+
+								<div class="flex items-center gap-1">
+									{#if deletingApiKey !== apiKey.id}
+										<div in:scale={{ duration: 200, easing: quintOut }}>
+											<Button
+												variant="destructive"
+												size="sm"
+												onclick={() => (deletingApiKey = apiKey.id)}
+											>
+												Supprimer
+											</Button>
+										</div>
+									{:else}
+										<div
+											class="flex items-center gap-1"
+											in:scale={{ duration: 200, easing: quintOut }}
+										>
+											<Button variant="destructive" size="sm" onclick={() => deleteApiKey()}>
+												Confirmer
+											</Button>
+											<Button variant="outline" size="sm" onclick={cancelDelete}>Annuler</Button>
+										</div>
+									{/if}
+								</div>
+							</div>
+						</CardContent>
+					</Card>
 				</div>
 			{:else}
 				<div class="py-8 text-center text-muted-foreground">
