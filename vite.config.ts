@@ -13,7 +13,8 @@ export default defineConfig({
 				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2,ttf}'],
 			},
 			devOptions: {
-				enabled: true,
+				enabled: false,
+				suppressWarnings: true,
 			},
 		}),
 	],
