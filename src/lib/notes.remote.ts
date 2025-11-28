@@ -3,6 +3,7 @@ import { requireAuth } from '$lib/server/authUtils'
 import prisma from '$lib/server/prisma'
 import type { Note } from '@prisma/client'
 import * as v from 'valibot'
+import * as aiUtils from '$lib/utils/ai'
 
 const noteIdSchema = v.pipe(v.string(), v.minLength(1))
 const createNoteSchema = v.object({
@@ -50,6 +51,12 @@ export const createNote = command(
 			},
 		})
 
+		// Generate and save embedding asynchronously
+		const embedding = await aiUtils.generateEmbedding(`${title}\n\n${content}`)
+		if (embedding) {
+			await prisma.$executeRaw`UPDATE "note" SET "embedding" = ${JSON.stringify(embedding)}::vector WHERE "id" = ${note.id}`
+		}
+
 		return note
 	}
 )
@@ -87,6 +94,15 @@ export const updateNote = command(
 			data: updateData,
 		})
 
+		if (title !== undefined || content !== undefined) {
+			const embedding = await aiUtils.generateEmbedding(
+				`${updatedNote.title}\n\n${updatedNote.content}`
+			)
+			if (embedding) {
+				await prisma.$executeRaw`UPDATE "note" SET "embedding" = ${JSON.stringify(embedding)}::vector WHERE "id" = ${id}`
+			}
+		}
+
 		return updatedNote
 	}
 )
@@ -106,4 +122,22 @@ export const deleteNote = command(noteIdSchema, async (id: string): Promise<bool
 	})
 
 	return true
+})
+
+export const searchNotes = query(v.string(), async (queryText: string): Promise<Note[]> => {
+	const event = getRequestEvent()
+	const user = await requireAuth(event)
+
+	const embedding = await aiUtils.generateEmbedding(queryText)
+	if (!embedding) return []
+
+	const notes = await prisma.$queryRaw<Note[]>`
+		SELECT id, title, content, "createdAt", "updatedAt", "userId"
+		FROM "note"
+		WHERE "userId" = ${user.id}
+		ORDER BY "embedding" <=> ${JSON.stringify(embedding)}::vector
+		LIMIT 5
+	`
+
+	return notes
 })

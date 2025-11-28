@@ -60,6 +60,7 @@
 		"@sveltejs/adapter-node": "^5.2.13",
 		"ai": "^4.3.9",
 		"better-auth": "^1.2.7",
+		"dotenv": "^17.2.3",
 		"gsap": "^3.13.0",
 		"lucide-svelte": "^0.488.0",
 		"marked": "^15.0.8",

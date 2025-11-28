@@ -6,10 +6,12 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider   = "postgresql"
+  extensions = [vector]
 }
 
 model User {
@@ -86,7 +88,9 @@ model Note {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  contexts  AIContext[] 
+  embedding Unsupported("vector")?
+
+  contexts  AIContext[]  
 
   @@map("note")
 }
