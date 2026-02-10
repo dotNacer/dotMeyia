@@ -1,6 +1,7 @@
 import { query, command, getRequestEvent } from '$app/server'
 import { requireAuth } from '$lib/server/authUtils'
 import prisma from '$lib/server/prisma'
+import { indexNote } from '$lib/server/noteIndexer'
 import type { Note } from '@prisma/client'
 import * as v from 'valibot'
 
@@ -50,6 +51,7 @@ export const createNote = command(
 			},
 		})
 
+		await indexNote(note)
 		return note
 	}
 )
@@ -87,6 +89,7 @@ export const updateNote = command(
 			data: updateData,
 		})
 
+		await indexNote(updatedNote)
 		return updatedNote
 	}
 )
