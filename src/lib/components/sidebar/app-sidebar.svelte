@@ -3,6 +3,7 @@
 	import FileText from '@lucide/svelte/icons/file-text';
 	import BotMessageSquare from '@lucide/svelte/icons/bot-message-square';
 	import BrainCircuit from '@lucide/svelte/icons/brain-circuit';
+	import ShoppingCart from '@lucide/svelte/icons/shopping-cart';
 	// This is sample data.
 	const data = {
 		navMain: [
@@ -14,6 +15,11 @@
 						title: 'Dashboard',
 						url: '/',
 						icon: Home
+					},
+					{
+						title: 'Boutique',
+						url: '/store',
+						icon: ShoppingCart
 					},
 					{
 						title: 'Notes',

@@ -55,6 +55,7 @@
 	"dependencies": {
 		"@ai-sdk/google": "^1.2.12",
 		"@ai-sdk/svelte": "^2.1.9",
+		"@medusajs/js-sdk": "^2.13.1",
 		"@prisma/adapter-pg": "^7.0.1",
 		"@prisma/client": "^7.0.1",
 		"@sveltejs/adapter-node": "^5.2.13",
