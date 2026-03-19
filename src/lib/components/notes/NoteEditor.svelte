@@ -5,7 +5,7 @@
 	import { ChevronLeft } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
 
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
 	type NoteData = {
